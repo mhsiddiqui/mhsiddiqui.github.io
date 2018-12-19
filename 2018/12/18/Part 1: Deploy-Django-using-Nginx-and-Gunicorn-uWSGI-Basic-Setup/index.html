@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="utf-8">
+<title>Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup - Muhammad Hassan&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+
+
+    <meta name="description" content="Django is a python based framework that was developed to help developer to take applications from idea to fulfillment as fast as could reasonably be expected. Django incorporates a streamlined develop">
+<meta name="keywords" content="Django,Python,Django-Deployment,Gunicorn,uWSGI,Supervisor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 1: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Basic Setup">
+<meta property="og:url" content="https://mhsiddiqui.github.io/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/index.html">
+<meta property="og:site_name" content="Muhammad Hassan&#39;s Blog">
+<meta property="og:description" content="Django is a python based framework that was developed to help developer to take applications from idea to fulfillment as fast as could reasonably be expected. Django incorporates a streamlined develop">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-12-19T20:12:53.893Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Part 1: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Basic Setup">
+<meta name="twitter:description" content="Django is a python based framework that was developed to help developer to take applications from idea to fulfillment as fast as could reasonably be expected. Django incorporates a streamlined develop">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item"
+                href="/">Home</a>
+                
+                <a class="navbar-item"
+                href="/archives">Archives</a>
+                
+                <a class="navbar-item"
+                href="/categories">Categories</a>
+                
+                <a class="navbar-item"
+                href="/tags">Tags</a>
+                
+                <a class="navbar-item"
+                href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-12-18T18:34:48.000Z">2018-12-18</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Python/">Python</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    7 minutes read (About 1120 words)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup
+            
+        </h1>
+        <div class="content">
+            <p>Django is a python based framework that was developed to help developer to take applications from idea to fulfillment as fast as could reasonably be expected. Django incorporates a streamlined development server for testing your code locally. But for production purpose, a more advance and secure server is required. This article will help you to setup basic server of your Django based application. We will be setting up Django server on Ubuntu 18.04 for this article.</p>
+<a id="more"></a>
+<h2 id="Initial-setup"><a href="#Initial-setup" class="headerlink" title="Initial setup"></a>Initial setup</h2><p>For setting up server on Ubuntu, you need to install some packages which are listed below.</p>
+<ol>
+<li>Pip</li>
+<li>Python-dev</li>
+<li>Nginx</li>
+</ol>
+<p>To install these packages, run below commands.</p>
+<p><strong>For Python-2.x</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python-pip python-dev libpq-dev nginx</span><br></pre></td></tr></table></figure></p>
+<p><strong>For Python-3.x</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3-pip python3-dev libpq-dev nginx</span><br></pre></td></tr></table></figure></p>
+<p>These commands will install all required packages in your server and you will be ready to start your server setup.</p>
+<h2 id="Setup-a-Python-Virtual-Environment"><a href="#Setup-a-Python-Virtual-Environment" class="headerlink" title="Setup a Python Virtual Environment"></a>Setup a Python Virtual Environment</h2><p>For setting up a Django application, we will have to setup a virtual environment. To do this, we first need access to the <code>virtualenv</code> command. We can install this with pip.</p>
+<p><strong>For Python-2.x</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -H pip install --upgrade pip</span><br><span class="line">sudo -H pip install virtualenv</span><br></pre></td></tr></table></figure></p>
+<p><strong>For Python-3.x</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -H pip3 install --upgrade pip</span><br><span class="line">sudo -H pip3 install virtualenv</span><br></pre></td></tr></table></figure></p>
+<p>Now you can create a virtual environment by using below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir myproject</span><br><span class="line">virtualenv venv</span><br></pre></td></tr></table></figure>
+<p>Now activate your virtual environment by running below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">source</span> venv/bin/activate</span><br></pre></td></tr></table></figure>
+<p>Now install Django in this environment.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Django</span><br></pre></td></tr></table></figure>
+<h2 id="Setup-a-Django-Application"><a href="#Setup-a-Django-Application" class="headerlink" title="Setup a Django Application"></a>Setup a Django Application</h2><p>Since we have setup a virtual environment and installed Django in it, we can create our basic Django application. Run below command to create a basic Django application.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject myproject ~/myproject</span><br></pre></td></tr></table></figure>
+<p>This will create a django application in you current directory. You can run your application like by running below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure>
+<p>Your app will be accessible on <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a>.</p>
+<h2 id="Setup-Gunicorn-uWSGI"><a href="#Setup-Gunicorn-uWSGI" class="headerlink" title="Setup Gunicorn/uWSGI"></a>Setup Gunicorn/uWSGI</h2><p>The server we run in previous step through <code>manage.py</code> command is only mean for development purpose. For production environment, you need to use other servers like Gunicorn or uWSGI. For doing this, we first need to install these packages.</p>
+<p><strong>For Gunicorn</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install gunicorn</span><br></pre></td></tr></table></figure></p>
+<p><strong>For uWSGI</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install uwsgi</span><br></pre></td></tr></table></figure></p>
+<p>After installation of server of your choice, you need to test ability of that server to run your application. In your project directory, run following command.</p>
+<p><strong>For Gunicorn</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gunicorn --<span class="hljs-built_in">bind</span> 0.0.0.0:8000 myproject.wsgi</span><br></pre></td></tr></table></figure></p>
+<p><strong>For uWSGI</strong><br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uwsgi --http :8000 --module myproject.wsgi</span><br></pre></td></tr></table></figure></p>
+<p><code>myproject.wsgi</code> in both commands refers to the <code>wsgi.py</code> file in your project directory (with settings.py). Your app will be accessible on <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a>.</p>
+<h2 id="Setup-Gunicorn-uWSGI-Service"><a href="#Setup-Gunicorn-uWSGI-Service" class="headerlink" title="Setup Gunicorn/uWSGI Service"></a>Setup Gunicorn/uWSGI Service</h2><p>In previous step, we verified that our application is running correctly with Gunicorn/uWSGI. In this step, we will create a service for these server so that it keeps on running as daemon on our server. To do this, we will be using <a href="http://supervisord.org/index.html" target="_blank" rel="noopener"><code>supervisor</code></a>. To install <code>supervisor</code>, run following command in your virtual environment.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install supervisor</span><br></pre></td></tr></table></figure>
+<p>To create a supervisor service, you need to create a supervisor configuration file for your project. To create one for your project, run following command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo_supervisord_conf &gt; supervisord.conf</span><br></pre></td></tr></table></figure>
+<p>This will create a sample supervisor configuration file which you can modify for your project. For our project, add one of the following according to choice of your server in your configuration file.</p>
+<p><strong>For Gunicorn</strong><br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[program:myproject_server]</span><br><span class="line">numprocs=1</span><br><span class="line">command=gunicorn --bind 0.0.0.0:8000 myproject.wsgi</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=999</span><br></pre></td></tr></table></figure></p>
+<p><strong>For uWSGI</strong><br><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[program:myproject_server]</span><br><span class="line">numprocs=1</span><br><span class="line">command=uwsgi --http :8000 --module myproject.wsgi</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=999</span><br></pre></td></tr></table></figure></p>
+<p>In above configuration, you need exact path of <code>gunicorn</code> or <code>uwsgi</code> executable. If both packages are installed in virtual environment as in our case, we need to mention its path like <code>venv/bin/gunicorn</code> or <code>venv/bin/uwsgi</code>. Once you have added above configuration in <code>supervisord.conf</code> file, now you can start supervisor by running below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisord</span><br></pre></td></tr></table></figure>
+<p>For running server on startup.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat supervisord.conf &gt; /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+<p>This will start a supervisor service with name <code>myproject_server</code>. Your can access tour server on <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a>. If you made some changes in supervisor configuration file, run following command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo supervisorctl reread</span><br></pre></td></tr></table></figure>
+<p>If you made changes in your project code, run following command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo supervisorctl restart myproject_server</span><br></pre></td></tr></table></figure>
+<h2 id="Configure-Nginx"><a href="#Configure-Nginx" class="headerlink" title="Configure Nginx"></a>Configure Nginx</h2><p>After setting up Gunicorn/uWSGI, we need to setup Nginx to pass traffic to the process. Start by creating and opening a new server block in Nginx’s sites-available directory.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/sites-available/myproject</span><br></pre></td></tr></table></figure>
+<p>Add following code in your Nginx configuration file (/etc/nginx/sites-available/myproject).</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name server_domain_or_IP;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        include proxy_params;</span><br><span class="line">        proxy_pass http://127.0.0.1:8000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Save and close the file when you are finished. Now, we can enable the file by linking it to the sites-enabled directory.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled</span><br></pre></td></tr></table></figure>
+<p>Test your Nginx configuration for syntax errors by typing below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -t</span><br></pre></td></tr></table></figure>
+<p>If no errors are reported, restart Nginx by running below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<p>Your application will be available on <a href="http://127.0.0.1" target="_blank" rel="noopener">http://127.0.0.1</a> or <a href="http://server_domain_or_IP" target="_blank" rel="noopener">http://server_domain_or_IP</a>.</p>
+<h2 id="Deploying-New-Version"><a href="#Deploying-New-Version" class="headerlink" title="Deploying New Version"></a>Deploying New Version</h2><p>For any deployment system, the process of deployment of new version is very important. For a good deployment process, this process should be as easy as possible. For deployment of a new version of your project for deployment system described in this article, following steps are required.</p>
+<ol>
+<li>Get latest code from your git repository.</li>
+<li>Run database migrations by running <code>python manage.py migrate</code></li>
+<li>Collect static files from multiple apps into a single path by running <code>python manage.py collectstatic</code></li>
+<li>Restart supervisor service by running <code>sudo supervisorctl restart myproject_server</code></li>
+</ol>
+<p>These steps are only applicable if you have changes in your Django application. If you have changes in your supervisor configuration, you should run <code>sudo supervisorctl reread</code>.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>In this article, we’ve set up a basic Django project in a virtual environment. We’ve configured Gunicorn/uWSGI to translate client requests so that Django can handle them. Afterwards, we set up Nginx to act as a reverse proxy to handle client connections and serve the correct project depending on the client request. We used supervisor in order to run service for our application server. Similar services can be written for other processes like celery worker or celery beat. The whole process can be automated using fabric script.</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Django/">Django</a>, <a class="has-link-grey -link" href="/tags/Django-Deployment/">Django-Deployment</a>, <a class="has-link-grey -link" href="/tags/Gunicorn/">Gunicorn</a>, <a class="has-link-grey -link" href="/tags/Python/">Python</a>, <a class="has-link-grey -link" href="/tags/Supervisor/">Supervisor</a>, <a class="has-link-grey -link" href="/tags/uWSGI/">uWSGI</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/06/18/Understanding-Context-Managers-in-Python/">
+                <span class="level-item">Understanding Context Managers in Python</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://mhsiddiqui.github.io/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/';
+        this.page.identifier = '2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'mhsiddiqui-github-io' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    <img class="image is-128x128 has-mb-6" src="/images/avatar.svg" alt="Muhammad Hassan Siddiqui">
+                    
+                    <p class="is-size-4 is-block">
+                        Muhammad Hassan Siddiqui
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        Python Developer
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Pakistan</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        4
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        23
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="http://github.com/mhsiddiqui">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="http://github.com/mhsiddiqui">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Stackoverflow" href="https://stackoverflow.com/users/5532516/muhammad-hassan">
+                
+                <i class="fab fa-stack-overflow"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Twitter" href="https://twitter.com/mhsiddiqui16">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Resume" href="https://mhsiddiqui.github.io/resume">
+                
+                <i class="fas fa-file"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Categories
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/HTML-to-PDF/">
+            <span class="level-start">
+                <span class="level-item">HTML to PDF</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/JavaScript/">
+            <span class="level-start">
+                <span class="level-item">JavaScript</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/Python/">
+            <span class="level-start">
+                <span class="level-item">Python</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/Python/Django/">
+            <span class="level-start">
+                <span class="level-item">Django</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Tag Cloud
+        </h3>
+        <a href="/tags/Apache-FOP/" style="font-size: 10px;">Apache-FOP</a> <a href="/tags/Context-Manager/" style="font-size: 10px;">Context-Manager</a> <a href="/tags/Custom-Context-Manager/" style="font-size: 10px;">Custom-Context-Manager</a> <a href="/tags/Custom-Filters/" style="font-size: 10px;">Custom-Filters</a> <a href="/tags/Django/" style="font-size: 15px;">Django</a> <a href="/tags/Django-Deployment/" style="font-size: 10px;">Django-Deployment</a> <a href="/tags/FFmpeg/" style="font-size: 10px;">FFmpeg</a> <a href="/tags/FOP/" style="font-size: 10px;">FOP</a> <a href="/tags/Gunicorn/" style="font-size: 10px;">Gunicorn</a> <a href="/tags/Html-to-PDF/" style="font-size: 10px;">Html-to-PDF</a> <a href="/tags/Jasmine-js/" style="font-size: 10px;">Jasmine.js</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/JavaScript-Testing/" style="font-size: 10px;">JavaScript-Testing</a> <a href="/tags/JavaScript-Unittest/" style="font-size: 10px;">JavaScript-Unittest</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/Python-Generators/" style="font-size: 10px;">Python-Generators</a> <a href="/tags/Python-Resource-Management/" style="font-size: 10px;">Python-Resource-Management</a> <a href="/tags/Scenario-Based-Tests/" style="font-size: 10px;">Scenario-Based-Tests</a> <a href="/tags/Supervisor/" style="font-size: 10px;">Supervisor</a> <a href="/tags/Thumbnail/" style="font-size: 10px;">Thumbnail</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/XSL/" style="font-size: 10px;">XSL</a> <a href="/tags/uWSGI/" style="font-size: 10px;">uWSGI</a>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+            
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Initial-setup">
+        <span class="has-mr-6">1</span>
+        <span>Initial setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-a-Python-Virtual-Environment">
+        <span class="has-mr-6">2</span>
+        <span>Setup a Python Virtual Environment</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-a-Django-Application">
+        <span class="has-mr-6">3</span>
+        <span>Setup a Django Application</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-Gunicorn-uWSGI">
+        <span class="has-mr-6">4</span>
+        <span>Setup Gunicorn/uWSGI</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-Gunicorn-uWSGI-Service">
+        <span class="has-mr-6">5</span>
+        <span>Setup Gunicorn/uWSGI Service</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-Nginx">
+        <span class="has-mr-6">6</span>
+        <span>Configure Nginx</span>
+        </a></li><li>
+        <a class="is-flex" href="#Deploying-New-Version">
+        <span class="has-mr-6">7</span>
+        <span>Deploying New Version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">8</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-18T18:34:48.000Z">2018-12-18</time></div>
+                    <a href="/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/" class="has-link-black-ter is-size-6">Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a> / <a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/18/Understanding-Context-Managers-in-Python/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Understanding Context Managers in Python">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-18T10:16:00.000Z">2018-06-18</time></div>
+                    <a href="/2018/06/18/Understanding-Context-Managers-in-Python/" class="has-link-black-ter is-size-6">Understanding Context Managers in Python</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Creating Custom Django Filters in Django">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-09T13:22:01.000Z">2018-06-09</time></div>
+                    <a href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/" class="has-link-black-ter is-size-6">Creating Custom Django Filters in Django</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a> / <a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/09/Scenario-based-tests-in-Jasmine-js/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Scenario based tests in Jasmine.js">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-09T09:18:45.000Z">2018-04-09</time></div>
+                    <a href="/2018/04/09/Scenario-based-tests-in-Jasmine-js/" class="has-link-black-ter is-size-6">Scenario based tests in Jasmine.js</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/02/09/Using-FFmpeg-to-create-video-thumbnails-in-Python/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Using FFmpeg to create video thumbnails in Python">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-02-08T20:47:47.000Z">2018-02-09</time></div>
+                    <a href="/2018/02/09/Using-FFmpeg-to-create-video-thumbnails-in-Python/" class="has-link-black-ter is-size-6">Using FFmpeg to create video thumbnails in Python</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <ul class="menu-list">
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Apache-FOP/">
+                        <span class="level-start">
+                            <span class="level-item">Apache-FOP</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Context-Manager/">
+                        <span class="level-start">
+                            <span class="level-item">Context-Manager</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Custom-Context-Manager/">
+                        <span class="level-start">
+                            <span class="level-item">Custom-Context-Manager</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Custom-Filters/">
+                        <span class="level-start">
+                            <span class="level-item">Custom-Filters</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Django/">
+                        <span class="level-start">
+                            <span class="level-item">Django</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Django-Deployment/">
+                        <span class="level-start">
+                            <span class="level-item">Django-Deployment</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/FFmpeg/">
+                        <span class="level-start">
+                            <span class="level-item">FFmpeg</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/FOP/">
+                        <span class="level-start">
+                            <span class="level-item">FOP</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Gunicorn/">
+                        <span class="level-start">
+                            <span class="level-item">Gunicorn</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Html-to-PDF/">
+                        <span class="level-start">
+                            <span class="level-item">Html-to-PDF</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Jasmine-js/">
+                        <span class="level-start">
+                            <span class="level-item">Jasmine.js</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript-Testing/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript-Testing</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript-Unittest/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript-Unittest</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python/">
+                        <span class="level-start">
+                            <span class="level-item">Python</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">4</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python-Generators/">
+                        <span class="level-start">
+                            <span class="level-item">Python-Generators</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python-Resource-Management/">
+                        <span class="level-start">
+                            <span class="level-item">Python-Resource-Management</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Scenario-Based-Tests/">
+                        <span class="level-start">
+                            <span class="level-item">Scenario-Based-Tests</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Supervisor/">
+                        <span class="level-start">
+                            <span class="level-item">Supervisor</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Thumbnail/">
+                        <span class="level-start">
+                            <span class="level-item">Thumbnail</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/XML/">
+                        <span class="level-start">
+                            <span class="level-item">XML</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/XSL/">
+                        <span class="level-start">
+                            <span class="level-item">XSL</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/uWSGI/">
+                        <span class="level-start">
+                            <span class="level-item">uWSGI</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+        
+        </div>
+    
+</div>
+
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Initial-setup">
+        <span class="has-mr-6">1</span>
+        <span>Initial setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-a-Python-Virtual-Environment">
+        <span class="has-mr-6">2</span>
+        <span>Setup a Python Virtual Environment</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-a-Django-Application">
+        <span class="has-mr-6">3</span>
+        <span>Setup a Django Application</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-Gunicorn-uWSGI">
+        <span class="has-mr-6">4</span>
+        <span>Setup Gunicorn/uWSGI</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-Gunicorn-uWSGI-Service">
+        <span class="has-mr-6">5</span>
+        <span>Setup Gunicorn/uWSGI Service</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-Nginx">
+        <span class="has-mr-6">6</span>
+        <span>Configure Nginx</span>
+        </a></li><li>
+        <a class="is-flex" href="#Deploying-New-Version">
+        <span class="has-mr-6">7</span>
+        <span>Deploying New Version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">8</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            Recent
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-12-18T18:34:48.000Z">2018-12-18</time></div>
+                    <a href="/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/" class="has-link-black-ter is-size-6">Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a> / <a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/18/Understanding-Context-Managers-in-Python/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Understanding Context Managers in Python">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-18T10:16:00.000Z">2018-06-18</time></div>
+                    <a href="/2018/06/18/Understanding-Context-Managers-in-Python/" class="has-link-black-ter is-size-6">Understanding Context Managers in Python</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Creating Custom Django Filters in Django">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-06-09T13:22:01.000Z">2018-06-09</time></div>
+                    <a href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/" class="has-link-black-ter is-size-6">Creating Custom Django Filters in Django</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a> / <a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/04/09/Scenario-based-tests-in-Jasmine-js/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Scenario based tests in Jasmine.js">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-04-09T09:18:45.000Z">2018-04-09</time></div>
+                    <a href="/2018/04/09/Scenario-based-tests-in-Jasmine-js/" class="has-link-black-ter is-size-6">Scenario based tests in Jasmine.js</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/JavaScript/">JavaScript</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2018/02/09/Using-FFmpeg-to-create-video-thumbnails-in-Python/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Using FFmpeg to create video thumbnails in Python">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-02-08T20:47:47.000Z">2018-02-09</time></div>
+                    <a href="/2018/02/09/Using-FFmpeg-to-create-video-thumbnails-in-Python/" class="has-link-black-ter is-size-6">Using FFmpeg to create video thumbnails in Python</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            Archives
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">December 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">June 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">April 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">February 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">January 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Tags
+            </h3>
+            <ul class="menu-list">
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Apache-FOP/">
+                        <span class="level-start">
+                            <span class="level-item">Apache-FOP</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Context-Manager/">
+                        <span class="level-start">
+                            <span class="level-item">Context-Manager</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Custom-Context-Manager/">
+                        <span class="level-start">
+                            <span class="level-item">Custom-Context-Manager</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Custom-Filters/">
+                        <span class="level-start">
+                            <span class="level-item">Custom-Filters</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Django/">
+                        <span class="level-start">
+                            <span class="level-item">Django</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Django-Deployment/">
+                        <span class="level-start">
+                            <span class="level-item">Django-Deployment</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/FFmpeg/">
+                        <span class="level-start">
+                            <span class="level-item">FFmpeg</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/FOP/">
+                        <span class="level-start">
+                            <span class="level-item">FOP</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Gunicorn/">
+                        <span class="level-start">
+                            <span class="level-item">Gunicorn</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Html-to-PDF/">
+                        <span class="level-start">
+                            <span class="level-item">Html-to-PDF</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Jasmine-js/">
+                        <span class="level-start">
+                            <span class="level-item">Jasmine.js</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript-Testing/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript-Testing</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/JavaScript-Unittest/">
+                        <span class="level-start">
+                            <span class="level-item">JavaScript-Unittest</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python/">
+                        <span class="level-start">
+                            <span class="level-item">Python</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">4</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python-Generators/">
+                        <span class="level-start">
+                            <span class="level-item">Python-Generators</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Python-Resource-Management/">
+                        <span class="level-start">
+                            <span class="level-item">Python-Resource-Management</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Scenario-Based-Tests/">
+                        <span class="level-start">
+                            <span class="level-item">Scenario-Based-Tests</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Supervisor/">
+                        <span class="level-start">
+                            <span class="level-item">Supervisor</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Thumbnail/">
+                        <span class="level-start">
+                            <span class="level-item">Thumbnail</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/XML/">
+                        <span class="level-start">
+                            <span class="level-item">XML</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/XSL/">
+                        <span class="level-start">
+                            <span class="level-item">XSL</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/uWSGI/">
+                        <span class="level-start">
+                            <span class="level-item">uWSGI</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2018 Muhammad Hassan Siddiqui</p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
