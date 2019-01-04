@@ -2,18 +2,23 @@
 <html >
 <head>
     <meta charset="utf-8">
-<title>Tag: Custom-Filters - Muhammad Hassan&#39;s Blog</title>
+<title>Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup - Muhammad Hassan&#39;s Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Muhammad Hassan&#39;s Blog">
-<meta property="og:url" content="https://mhsiddiqui.github.io/tags/Custom-Filters/index.html">
+    <meta name="description" content="In Part 1, we setup a Django server using uWSGI/Gunicorn and Nginx. This server only contain one service which is our application server. But sometimes, our server can have more than one service e.g.">
+<meta name="keywords" content="Django,Python,Django-Deployment,Gunicorn,uWSGI,Supervisor,Celery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 2: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Celery Worker and Beat Setup">
+<meta property="og:url" content="https://mhsiddiqui.github.io/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/index.html">
 <meta property="og:site_name" content="Muhammad Hassan&#39;s Blog">
+<meta property="og:description" content="In Part 1, we setup a Django server using uWSGI/Gunicorn and Nginx. This server only contain one service which is our application server. But sometimes, our server can have more than one service e.g.">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-04T20:46:20.499Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Muhammad Hassan&#39;s Blog">
+<meta name="twitter:title" content="Part 2: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Celery Worker and Beat Setup">
+<meta name="twitter:description" content="In Part 1, we setup a Django server using uWSGI/Gunicorn and Nginx. This server only contain one service which is our application server. But sometimes, our server can have more than one service e.g.">
 
 
 
@@ -79,7 +84,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="Muhammad Hassan&#39;s Blog" height="28">
+                <img src="/images/favicon.svg" alt="Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup" height="28">
             
             </a>
         </div>
@@ -107,6 +112,10 @@
             <div class="navbar-end">
                 
                 
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
                 
                 <a class="navbar-item search" title="Search" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -121,23 +130,12 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
-    <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">Tags</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Custom-Filters</a></li>
-        </ul>
-        </nav>
-    </div>
-</div>
-
-    <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-06-09T13:22:01.000Z">2018-06-09</time>
+                <time class="level-item has-text-grey" datetime="2018-12-25T18:34:48.000Z">2018-12-25</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/Python/">Python</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
@@ -147,7 +145,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    3 minutes read (About 496 words)
+                    5 minutes read (About 695 words)
                 </span>
                 
             </div>
@@ -155,32 +153,98 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/">Creating Custom Django Filters in Django</a>
+                Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup
             
         </h1>
         <div class="content">
-            <p>In django’s template framework, there is a wide variety of implicit filters which you can use for different purposes in your application. Filters are functions which control any input which is coming from template. For example you can capitalize a string with following syntax.</p>
-<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; string|upper &#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>In above example, upper is the filter which is converting value coming into string into upper case.</p>
+            <p>In Part 1, we setup a Django server using uWSGI/Gunicorn and Nginx. This server only contain one service which is our application server. But sometimes, our server can have more than one service e.g. Celery Worker and Celery Beat etc. These services can be run using Supervisor.</p>
+<a id="more"></a>
+<h1 id="What-is-Celery"><a href="#What-is-Celery" class="headerlink" title="What is Celery"></a>What is Celery</h1><p>Celery is a simple, flexible, and reliable distributed system to process vast amounts of messages, while providing operations with the tools required to maintain such a system. It’s a task queue with focus on real-time processing, while also supporting task scheduling. Celery communicates via messages, usually using a broker to mediate between clients and workers. To initiate a task the client adds a message to the queue, the broker then delivers that message to a worker. Celery supports several message transport alternatives. List of supported brokers can be found <a href="http://docs.celeryproject.org/en/latest/getting-started/brokers/index.html" target="_blank" rel="noopener">here</a>.</p>
+<h1 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h1><p>To setup Celery for your project, you first need to choose a broker. For our current setup, we will be using Redis. For this, you first need to install Redis on your machine by running below command.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install redis</span><br></pre></td></tr></table></figure>
+<p>Install Celery in your virtual environment by running below command and update your requirements.txt file.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install celery[redis]</span><br><span class="line">pip freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+<p>In next step, add a file <code>celery.py</code> in your project directory (with <code>settings.py</code> file). This file will look like this.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> absolute_import, unicode_literals</span><br><span class="line"><span class="hljs-keyword">import</span> os</span><br><span class="line"><span class="hljs-keyword">from</span> celery <span class="hljs-keyword">import</span> Celery</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># set the default Django settings module for the 'celery' program.</span></span><br><span class="line">os.environ.setdefault(<span class="hljs-string">'DJANGO_SETTINGS_MODULE'</span>, <span class="hljs-string">'myproject.settings'</span>)</span><br><span class="line"></span><br><span class="line">app = Celery(<span class="hljs-string">'myproject'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># Using a string here means the worker doesn't have to serialize</span></span><br><span class="line"><span class="hljs-comment"># the configuration object to child processes.</span></span><br><span class="line"><span class="hljs-comment"># - namespace='CELERY' means all celery-related configuration keys</span></span><br><span class="line"><span class="hljs-comment">#   should have a `CELERY_` prefix.</span></span><br><span class="line">app.config_from_object(<span class="hljs-string">'django.conf:settings'</span>, namespace=<span class="hljs-string">'CELERY'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># Load task modules from all registered Django app configs.</span></span><br><span class="line">app.autodiscover_tasks()</span><br></pre></td></tr></table></figure>
+<p>You can create your tasks like this.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.task</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span><span class="hljs-params">(a, b)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">print</span> (a+b)</span><br></pre></td></tr></table></figure>
+<p>You will have to run your Worker process like this.</p>
+<blockquote>
+<p>$ celery -A myproject worker -l info</p>
+</blockquote>
+<p>A task can be added in queue using <code>delay</code> function like shown below.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add.delay(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="Celery-Beat"><a href="#Celery-Beat" class="headerlink" title="Celery Beat"></a>Celery Beat</h1><p>Celery Beat is a task scheduler which run a task periodically according to settings provided. Tasks are executed by available Worker nodes in the cluster. To add a periodic tasks for your project, just add following lines in your <code>celery.py</code> file.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> celery.schedules <span class="hljs-keyword">import</span> crontab</span><br><span class="line"></span><br><span class="line">app.conf.beat_schedule = &#123;</span><br><span class="line">    <span class="hljs-string">'your_task_id'</span>: &#123;</span><br><span class="line">        <span class="hljs-string">'task'</span>: <span class="hljs-string">'your_task'</span>,</span><br><span class="line">        schedule<span class="hljs-string">': crontab(hour='</span>*<span class="hljs-string">', minute='</span>*/<span class="hljs-number">30</span><span class="hljs-string">')</span></span><br><span class="line"><span class="hljs-string">    &#125;,</span></span><br><span class="line"><span class="hljs-string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>Run Celery Beat service like This</p>
+<blockquote>
+<p>$ celery -A myproject beat</p>
+</blockquote>
+<p>Above setting will run your task after every 30 minutes. Further settings can be seen <a href="http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html" target="_blank" rel="noopener">here</a>.</p>
+<h1 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h1><p>For the deployment, supervisor can be used to run Celery Worker and Beat services. Django app will be run in similar way as discussed in Part 1. We will be making similar supervisor configurations for Celery Worker and Beat.</p>
+<h2 id="For-Celery-Worker"><a href="#For-Celery-Worker" class="headerlink" title="For Celery Worker"></a>For Celery Worker</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[program:celery_worker]</span><br><span class="line">numprocs=1</span><br><span class="line">command=celery -A myproject worker -l info</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=1000</span><br></pre></td></tr></table></figure>
+<h2 id="For-Celery-Beat"><a href="#For-Celery-Beat" class="headerlink" title="For Celery Beat"></a>For Celery Beat</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[program:celery_beat]</span><br><span class="line">numprocs=1</span><br><span class="line">command=celery -A myproject worker -l info</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=1001</span><br></pre></td></tr></table></figure>
+<p>One important thing is the priority of the your supervisor services. The priority of Celery Worker will be higher that Celery Beat.</p>
+<h1 id="Deploy-New-Version"><a href="#Deploy-New-Version" class="headerlink" title="Deploy New Version"></a>Deploy New Version</h1><p>When you will add a new task or make some changes in existing tasks, you will have to restart both services. You will do this by running below commands.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo supervisorctl restart celery_worker</span><br><span class="line">sudo supervisorctl restart celery_beat</span><br></pre></td></tr></table></figure>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>In this article, we added setup Celery Worker and Beat in Django app that we setup in Part 1. We used Redis server as broker for our Celery setup. Then we ran Celery Worker and Beat services using supervisor. In next article, we will discuss how we can automate this whole process using fabric script.</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
+        <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/06/09/Creating-Custom-Django-Filters-in-Django/#more">Read More</a>
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Celery/">Celery</a>, <a class="has-link-grey -link" href="/tags/Django/">Django</a>, <a class="has-link-grey -link" href="/tags/Django-Deployment/">Django-Deployment</a>, <a class="has-link-grey -link" href="/tags/Gunicorn/">Gunicorn</a>, <a class="has-link-grey -link" href="/tags/Python/">Python</a>, <a class="has-link-grey -link" href="/tags/Supervisor/">Supervisor</a>, <a class="has-link-grey -link" href="/tags/uWSGI/">uWSGI</a>
                 </div>
             </div>
         </div>
+        
         
         
     </div>
 </div>
 
 
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/12/18/Part 1: Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/">
+                <span class="level-item">Part 1: Deploy Django using Nginx and Gunicorn/uWSGI - Basic Setup</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
 
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://mhsiddiqui.github.io/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/';
+        this.page.identifier = '2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'mhsiddiqui-github-io' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
 </div>
                 
 
@@ -349,6 +413,49 @@
         <div class="column-right-shadow is-hidden-widescreen ">
         
             
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#What-is-Celery">
+        <span class="has-mr-6">1</span>
+        <span>What is Celery</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup">
+        <span class="has-mr-6">2</span>
+        <span>Setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#Celery-Beat">
+        <span class="has-mr-6">3</span>
+        <span>Celery Beat</span>
+        </a></li><li>
+        <a class="is-flex" href="#Deployment">
+        <span class="has-mr-6">4</span>
+        <span>Deployment</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#For-Celery-Worker">
+        <span class="has-mr-6">4.1</span>
+        <span>For Celery Worker</span>
+        </a></li><li>
+        <a class="is-flex" href="#For-Celery-Beat">
+        <span class="has-mr-6">4.2</span>
+        <span>For Celery Beat</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Deploy-New-Version">
+        <span class="has-mr-6">5</span>
+        <span>Deploy New Version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">6</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
         
             
 <div class="card widget">
@@ -813,6 +920,49 @@
 <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
     
         
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#What-is-Celery">
+        <span class="has-mr-6">1</span>
+        <span>What is Celery</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup">
+        <span class="has-mr-6">2</span>
+        <span>Setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#Celery-Beat">
+        <span class="has-mr-6">3</span>
+        <span>Celery Beat</span>
+        </a></li><li>
+        <a class="is-flex" href="#Deployment">
+        <span class="has-mr-6">4</span>
+        <span>Deployment</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#For-Celery-Worker">
+        <span class="has-mr-6">4.1</span>
+        <span>For Celery Worker</span>
+        </a></li><li>
+        <a class="is-flex" href="#For-Celery-Beat">
+        <span class="has-mr-6">4.2</span>
+        <span>For Celery Beat</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#Deploy-New-Version">
+        <span class="has-mr-6">5</span>
+        <span>Deploy New Version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">6</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
     
         
 <div class="card widget">
@@ -1277,7 +1427,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="Muhammad Hassan&#39;s Blog" height="28">
+                    <img src="/images/favicon.svg" alt="Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup" height="28">
                 
                 </a>
                 <p class="is-size-7">
