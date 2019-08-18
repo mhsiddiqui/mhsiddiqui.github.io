@@ -2,18 +2,23 @@
 <html >
 <head>
     <meta charset="utf-8">
-<title>Tag: Celery - Muhammad Hassan&#39;s Blog</title>
+<title>Part 3: Deploy Django using Nginx and Gunicorn/uWSGI - Automation with Fabric - Muhammad Hassan&#39;s Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Muhammad Hassan&#39;s Blog">
-<meta property="og:url" content="https://mhsiddiqui.github.io/tags/Celery/index.html">
+    <meta name="description" content="In part 1 of this series, we setup a Django server using uWSGI/Gunicorn and Nginx. In that part, all the steps of dependencies installation and configurations are performed one by one. The server we s">
+<meta name="keywords" content="Django,Python,Django-Deployment,Gunicorn,uWSGI,Supervisor,Fabric">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Part 3: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Automation with Fabric">
+<meta property="og:url" content="https://mhsiddiqui.github.io/2018/12/27/Part-3-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Automation-with-Fabric/index.html">
 <meta property="og:site_name" content="Muhammad Hassan&#39;s Blog">
+<meta property="og:description" content="In part 1 of this series, we setup a Django server using uWSGI/Gunicorn and Nginx. In that part, all the steps of dependencies installation and configurations are performed one by one. The server we s">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-18T19:33:42.463Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Muhammad Hassan&#39;s Blog">
+<meta name="twitter:title" content="Part 3: Deploy Django using Nginx and Gunicorn&#x2F;uWSGI - Automation with Fabric">
+<meta name="twitter:description" content="In part 1 of this series, we setup a Django server using uWSGI/Gunicorn and Nginx. In that part, all the steps of dependencies installation and configurations are performed one by one. The server we s">
 
 
 
@@ -79,7 +84,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="Muhammad Hassan&#39;s Blog" height="28">
+                <img src="/images/favicon.svg" alt="Part 3: Deploy Django using Nginx and Gunicorn/uWSGI - Automation with Fabric" height="28">
             
             </a>
         </div>
@@ -107,6 +112,10 @@
             <div class="navbar-end">
                 
                 
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
                 
                 <a class="navbar-item search" title="Search" href="javascript:;">
                     <i class="fas fa-search"></i>
@@ -121,23 +130,12 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
-    <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">Tags</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Celery</a></li>
-        </ul>
-        </nav>
-    </div>
-</div>
-
-    <div class="card">
     
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-12-25T18:34:48.000Z">2018-12-25</time>
+                <time class="level-item has-text-grey" datetime="2018-12-27T10:30:00.000Z">2018-12-27</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/Python/">Python</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/Python/Django/">Django</a>
@@ -147,7 +145,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    5 minutes read (About 695 words)
+                    5 minutes read (About 817 words)
                 </span>
                 
             </div>
@@ -155,30 +153,119 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/">Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup</a>
+                Part 3: Deploy Django using Nginx and Gunicorn/uWSGI - Automation with Fabric
             
         </h1>
         <div class="content">
-            <p>In Part 1, we setup a Django server using uWSGI/Gunicorn and Nginx. This server only contain one service which is our application server. But sometimes, our server can have more than one service e.g. Celery Worker and Celery Beat etc. These services can be run using Supervisor.</p>
+            <p>In part 1 of this series, we setup a Django server using uWSGI/Gunicorn and Nginx. In that part, all the steps of dependencies installation and configurations are performed one by one. The server we setup is very basic server having just application server. The database we used is Sqlite3 database. In real application, we will have PostgreSQL or MySQL which are more advance databases. Beside database and application server, we can have Celery workers or Celery Beat. For this type of servers, performing all steps one by one will be very hectic and time taking. So it is good to automate all this process using Fabric which is a high level Python (2.7, 3.4+) library designed to execute shell commands remotely over SSH, yielding useful Python objects in return. For further details, see <a href="http://www.fabfile.org" target="_blank" rel="noopener">Fabric documentation</a><br>.</p>
+<a id="more"></a>
+<p>Before we start writing fabric script, we first need to identify steps which we will be performing in order to setup a new machine and to deploy new version on server. </p>
+<p><strong>For Fresh Setup</strong></p>
+<ol>
+<li>Clone latest code</li>
+<li>Install required packages</li>
+<li>Setup database</li>
+<li>Requirement installation</li>
+<li>Migrate</li>
+<li>Collectstatic</li>
+<li>Configure supervisor</li>
+<li>Configure Nginx</li>
+</ol>
+<p><strong>For Deploying new version</strong></p>
+<ol>
+<li>Pull latest code from git repository</li>
+<li>Requirement installation</li>
+<li>Migrate</li>
+<li>Collectstatic</li>
+<li>Restart supervisor</li>
+</ol>
+<h1 id="Fabfile-Functions"><a href="#Fabfile-Functions" class="headerlink" title="Fabfile Functions"></a>Fabfile Functions</h1><p>Below we will be writing each functions which will be used in all above steps.</p>
+<h2 id="Install-required-packages"><a href="#Install-required-packages" class="headerlink" title="Install required packages"></a>Install required packages</h2><p>As we are setting up our server on Ubuntu, we will write commands according to Ubuuntu.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PACKAGE_LIST = [<span class="hljs-string">'git'</span>, <span class="hljs-string">'supervisor'</span>, <span class="hljs-string">'postgresql'</span>, <span class="hljs-string">'python-pip'</span>, <span class="hljs-string">'nginx'</span>] <span class="hljs-comment">#add all required packages in this list</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_package</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    sudo(<span class="hljs-string">'apt-get update'</span>)</span><br><span class="line">    sudo(<span class="hljs-string">'apt-get install %s'</span> % (<span class="hljs-string">' '</span>.join(PACKAGE_LIST)))</span><br></pre></td></tr></table></figure>
+<h2 id="Setup-database"><a href="#Setup-database" class="headerlink" title="Setup database"></a>Setup database</h2><p>We will be setting up Postgresql database for this server. Below is the code to setup a Postgresql database.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">DB_USER = <span class="hljs-string">"db_user"</span> <span class="hljs-comment">#define your user here</span></span><br><span class="line">DB_PASS = <span class="hljs-string">"db_pass"</span> <span class="hljs-comment">#define your password here</span></span><br><span class="line">DB_NAME = <span class="hljs-string">"db_name"</span> <span class="hljs-comment">#define your database name here</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_database</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    sudo(<span class="hljs-string">'psql -c "CREATE USER %s WITH NOCREATEDB NOCREATEUSER " \</span></span><br><span class="line"><span class="hljs-string">         "ENCRYPTED PASSWORD E\'%s\'"'</span> % (DB_USER, DB_PASS), user=<span class="hljs-string">'postgres'</span>)</span><br><span class="line">    sudo(<span class="hljs-string">'psql -c "CREATE DATABASE %s WITH OWNER %s"'</span> % (</span><br><span class="line">         DB_NAME, DB_USER), user=<span class="hljs-string">'postgres'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Pull-latest-code-from-git-repository"><a href="#Pull-latest-code-from-git-repository" class="headerlink" title="Pull latest code from git repository"></a>Pull latest code from git repository</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_code</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    branch = local(<span class="hljs-string">"git symbolic-ref --short -q HEAD"</span>, capture=<span class="hljs-keyword">True</span>)</span><br><span class="line">    local(<span class="hljs-string">'git pull origin %s'</span> % branch)</span><br></pre></td></tr></table></figure>
+<h2 id="Requirement-installation"><a href="#Requirement-installation" class="headerlink" title="Requirement installation"></a>Requirement installation</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_requirements</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    local(<span class="hljs-string">'pip install -r requirements.txt'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Migrate"><a href="#Migrate" class="headerlink" title="Migrate"></a>Migrate</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">migrate</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    local(<span class="hljs-string">'python manage.py migrate'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Collectstatic"><a href="#Collectstatic" class="headerlink" title="Collectstatic"></a>Collectstatic</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">collectstatic</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    local(<span class="hljs-string">'python manage.py collectstatic'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Configure-supervisor"><a href="#Configure-supervisor" class="headerlink" title="Configure supervisor"></a>Configure supervisor</h2><p>We will be using supervisor for running following services.</p>
+<ul>
+<li>uWSGI/Gunicorn server</li>
+<li>Celery worker</li>
+<li>Celery beat</li>
+</ul>
+<p>We have seen in <a href="/2018/12/18/Part%201:%20Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Basic-Setup/">Part 1</a> and <a href="/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/">Part 2</a> how to write supervisor configuration file for all above services. Create a file <code>supervisor.conf</code> and add below configurations in it. </p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">;; Add one of the above uWSGI/Gunicorm</span><br><span class="line">;; For gunicorn</span><br><span class="line">[program:myproject_server]</span><br><span class="line">numprocs=1</span><br><span class="line">command=gunicorn --bind 0.0.0.0:8000 myproject.wsgi</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=999</span><br><span class="line"></span><br><span class="line">;For uWSGI</span><br><span class="line">[program:myproject_server]</span><br><span class="line">numprocs=1</span><br><span class="line">command=uwsgi --http :8000 --module myproject.wsgi</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=999</span><br><span class="line"></span><br><span class="line">;;For Celery Worker**</span><br><span class="line">[program:celery_worker]</span><br><span class="line">numprocs=1</span><br><span class="line">command=celery -A myproject worker -l info</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=1000</span><br><span class="line"></span><br><span class="line">;;For Celery Beat**</span><br><span class="line">[program:celery_beat]</span><br><span class="line">numprocs=1</span><br><span class="line">command=celery -A myproject worker -l info</span><br><span class="line">autostart=true</span><br><span class="line">autorestart=true</span><br><span class="line">startsecs=10</span><br><span class="line">stopwaitsecs=600</span><br><span class="line">stopsignal=QUIT</span><br><span class="line">stopasgroup=true</span><br><span class="line">killasgroup=true</span><br><span class="line">priority=1001</span><br></pre></td></tr></table></figure>
+<p>Below is the code to setup your supervisor.</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">configure_supervisor</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    local(<span class="hljs-string">'supervisord -c supervisor.conf'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Configure-Nginx"><a href="#Configure-Nginx" class="headerlink" title="Configure Nginx"></a>Configure Nginx</h2><p>Create a file <code>nginx.conf</code> in your project and add following configuration in it.</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name server_domain_or_IP;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        include proxy_params;</span><br><span class="line">        proxy_pass http://127.0.0.1:8000;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Below is code to setup nginx</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">configure_nginx</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    sudo(<span class="hljs-string">'ln -s nginx.conf /etc/nginx/sites-enabled/myproject.conf'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Restart-supervisor"><a href="#Restart-supervisor" class="headerlink" title="Restart supervisor"></a>Restart supervisor</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">restart_supervisor</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    sudo(<span class="hljs-string">'supervisorctl restart myproject_server'</span>)</span><br><span class="line">    sudo(<span class="hljs-string">'supervisorctl restart celery_worker'</span>)</span><br><span class="line">    sudo(<span class="hljs-string">'supervisorctl restart celery_beat'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Restart-Nginx"><a href="#Restart-Nginx" class="headerlink" title="Restart Nginx"></a>Restart Nginx</h2><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">restart_nginx</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    sudo(<span class="hljs-string">'systemctl restart nginx'</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="For-Fresh-Setup"><a href="#For-Fresh-Setup" class="headerlink" title="For Fresh Setup"></a>For Fresh Setup</h1><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@task</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    install_package()</span><br><span class="line">    setup_database()</span><br><span class="line">    install_requirements()</span><br><span class="line">    migrate()</span><br><span class="line">    collectstatic()</span><br><span class="line">    configure_supervisor()</span><br><span class="line">    configure_nginx()</span><br><span class="line">    restart_supervisor()</span><br><span class="line">    restart_nginx()</span><br></pre></td></tr></table></figure>
+<p>Run below command to setup your new server.<br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fab setup</span><br></pre></td></tr></table></figure></p>
+<h1 id="For-Deploying-new-version"><a href="#For-Deploying-new-version" class="headerlink" title="For Deploying new version"></a>For Deploying new version</h1><figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@task</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    update_code()</span><br><span class="line">    install_requirements()</span><br><span class="line">    migrate()</span><br><span class="line">    collectstatic()</span><br><span class="line">    restart_supervisor()</span><br></pre></td></tr></table></figure>
+<p>Run below command to setup your new server.<br><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fab deploy</span><br></pre></td></tr></table></figure></p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>In this article, we wrote a fabric script in order to automate setup and deployment process. We divided our whole process in small steps and automated each step. By combining all these steps in required order, we automated whole proces. This can be extend to handle very complex server. Complete <code>fabfile</code> can be seen <a href="https://gist.github.com/mhsiddiqui/dd129b03bd780c8dadb4b09005fb76ca" target="_blank" rel="noopener">here</a>.</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
+        <div class="level is-size-7 is-uppercase">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/#more">Read More</a>
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Django/">Django</a>, <a class="has-link-grey -link" href="/tags/Django-Deployment/">Django-Deployment</a>, <a class="has-link-grey -link" href="/tags/Fabric/">Fabric</a>, <a class="has-link-grey -link" href="/tags/Gunicorn/">Gunicorn</a>, <a class="has-link-grey -link" href="/tags/Python/">Python</a>, <a class="has-link-grey -link" href="/tags/Supervisor/">Supervisor</a>, <a class="has-link-grey -link" href="/tags/uWSGI/">uWSGI</a>
                 </div>
             </div>
         </div>
+        
         
         
     </div>
 </div>
 
 
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/12/25/Part-2-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Celery-Setup/">
+                <span class="level-item">Part 2: Deploy Django using Nginx and Gunicorn/uWSGI - Celery Worker and Beat Setup</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
 
 
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://mhsiddiqui.github.io/2018/12/27/Part-3-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Automation-with-Fabric/';
+        this.page.identifier = '2018/12/27/Part-3-Deploy-Django-using-Nginx-and-Gunicorn-uWSGI-Automation-with-Fabric/';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'mhsiddiqui-github-io' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+<div id="disqus_thread">
+    
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </div>
+</div>
 </div>
                 
 
@@ -347,6 +434,73 @@
         <div class="column-right-shadow is-hidden-widescreen ">
         
             
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Fabfile-Functions">
+        <span class="has-mr-6">1</span>
+        <span>Fabfile Functions</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Install-required-packages">
+        <span class="has-mr-6">1.1</span>
+        <span>Install required packages</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-database">
+        <span class="has-mr-6">1.2</span>
+        <span>Setup database</span>
+        </a></li><li>
+        <a class="is-flex" href="#Pull-latest-code-from-git-repository">
+        <span class="has-mr-6">1.3</span>
+        <span>Pull latest code from git repository</span>
+        </a></li><li>
+        <a class="is-flex" href="#Requirement-installation">
+        <span class="has-mr-6">1.4</span>
+        <span>Requirement installation</span>
+        </a></li><li>
+        <a class="is-flex" href="#Migrate">
+        <span class="has-mr-6">1.5</span>
+        <span>Migrate</span>
+        </a></li><li>
+        <a class="is-flex" href="#Collectstatic">
+        <span class="has-mr-6">1.6</span>
+        <span>Collectstatic</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-supervisor">
+        <span class="has-mr-6">1.7</span>
+        <span>Configure supervisor</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-Nginx">
+        <span class="has-mr-6">1.8</span>
+        <span>Configure Nginx</span>
+        </a></li><li>
+        <a class="is-flex" href="#Restart-supervisor">
+        <span class="has-mr-6">1.9</span>
+        <span>Restart supervisor</span>
+        </a></li><li>
+        <a class="is-flex" href="#Restart-Nginx">
+        <span class="has-mr-6">1.10</span>
+        <span>Restart Nginx</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#For-Fresh-Setup">
+        <span class="has-mr-6">2</span>
+        <span>For Fresh Setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#For-Deploying-new-version">
+        <span class="has-mr-6">3</span>
+        <span>For Deploying new version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">4</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
         
             
 <div class="card widget">
@@ -822,6 +976,73 @@
 <div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
     
         
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#Fabfile-Functions">
+        <span class="has-mr-6">1</span>
+        <span>Fabfile Functions</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Install-required-packages">
+        <span class="has-mr-6">1.1</span>
+        <span>Install required packages</span>
+        </a></li><li>
+        <a class="is-flex" href="#Setup-database">
+        <span class="has-mr-6">1.2</span>
+        <span>Setup database</span>
+        </a></li><li>
+        <a class="is-flex" href="#Pull-latest-code-from-git-repository">
+        <span class="has-mr-6">1.3</span>
+        <span>Pull latest code from git repository</span>
+        </a></li><li>
+        <a class="is-flex" href="#Requirement-installation">
+        <span class="has-mr-6">1.4</span>
+        <span>Requirement installation</span>
+        </a></li><li>
+        <a class="is-flex" href="#Migrate">
+        <span class="has-mr-6">1.5</span>
+        <span>Migrate</span>
+        </a></li><li>
+        <a class="is-flex" href="#Collectstatic">
+        <span class="has-mr-6">1.6</span>
+        <span>Collectstatic</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-supervisor">
+        <span class="has-mr-6">1.7</span>
+        <span>Configure supervisor</span>
+        </a></li><li>
+        <a class="is-flex" href="#Configure-Nginx">
+        <span class="has-mr-6">1.8</span>
+        <span>Configure Nginx</span>
+        </a></li><li>
+        <a class="is-flex" href="#Restart-supervisor">
+        <span class="has-mr-6">1.9</span>
+        <span>Restart supervisor</span>
+        </a></li><li>
+        <a class="is-flex" href="#Restart-Nginx">
+        <span class="has-mr-6">1.10</span>
+        <span>Restart Nginx</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#For-Fresh-Setup">
+        <span class="has-mr-6">2</span>
+        <span>For Fresh Setup</span>
+        </a></li><li>
+        <a class="is-flex" href="#For-Deploying-new-version">
+        <span class="has-mr-6">3</span>
+        <span>For Deploying new version</span>
+        </a></li><li>
+        <a class="is-flex" href="#Conclusion">
+        <span class="has-mr-6">4</span>
+        <span>Conclusion</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
     
         
 <div class="card widget">
@@ -1297,7 +1518,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="Muhammad Hassan&#39;s Blog" height="28">
+                    <img src="/images/favicon.svg" alt="Part 3: Deploy Django using Nginx and Gunicorn/uWSGI - Automation with Fabric" height="28">
                 
                 </a>
                 <p class="is-size-7">
