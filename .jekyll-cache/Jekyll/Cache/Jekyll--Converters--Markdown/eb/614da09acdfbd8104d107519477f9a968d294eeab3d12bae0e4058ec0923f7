@@ -1,0 +1,114 @@
+I"�)<p>Jasmine is a behavior-driven development framework for testing JavaScript code. It does not depend on any other JavaScript frameworks. It does not require a DOM. And it has a clean, obvious syntax so that you can easily write tests. This guide is running against Jasmine version 2.4.1.</p>
+
+<p>That was brief introduction of jasmine which you can also get on their website. Writing test in jasmine is not very difficult. Every test suite start with a function called ‘describe’ which takes two input.</p>
+
+<!--more-->
+
+<ol>
+  <li>A string which is description of test case.</li>
+  <li>A function is method or block of code which implements suite.</li>
+</ol>
+
+<p>Second block of test is <code class="highlighter-rouge">it</code> block. <code class="highlighter-rouge">it</code> take same inputs as <code class="highlighter-rouge">describe</code>, a string and a function. A simple jasmine test is shown below.</p>
+
+<pre><code class="language-javascripti">describe('Check Addition Result', function () {
+    it('adds two numbers together', function () {
+        expect(1 + 5).toEqual(6);
+    });
+});
+</code></pre>
+
+<p>Here arguments of <code class="highlighter-rouge">expect</code> will be output of function to be tested, and <code class="highlighter-rouge">toEqual</code> will have expected result as argument.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>Download latest standalone release from <a href="https://github.com/jasmine/jasmine/releases">standalone download page</a> of Jasmine. This will look like this</p>
+
+<p><img src="/images/2018/3/capture2.png" alt="Jasmine.js" /></p>
+
+<p>Open <code class="highlighter-rouge">SpecRunner</code> in browser and you will look something like this.</p>
+
+<p><img src="/images/2018/3/capture3.png" alt="SpecRunner" /></p>
+
+<p>Now add following function in <code class="highlighter-rouge">src/Player.js</code> file.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="nx">input</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">input</span><span class="p">)){</span>
+	<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+	<span class="k">return</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>Now we will add tests for this function. Add following code in <code class="highlighter-rouge">spec/PlayerSpec.js</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">Function: evenOrOdd()</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+	<span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">Input is an even number</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+		<span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+	<span class="p">});</span>
+	<span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">Input is a string</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">);</span>
+		<span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+	<span class="p">});</span>
+	<span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">Input is a number in string</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">);</span>
+		<span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+	<span class="p">});</span>
+	<span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">Input is an odd number</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+		<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+		<span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+	<span class="p">});</span>
+
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>You will see result of your new tests like this when you will open <code class="highlighter-rouge">SpecRunner.html</code> in browser.</p>
+
+<p><img src="/images/2018/3/capture3.png" alt="Output" /></p>
+
+<p>You can see that we have to repeat same <code class="highlighter-rouge">it</code> block again and again. The only thing which is changing is description of test, input of function and expected output of function. Here we can use scenarios to avoid repetition of code.</p>
+
+<h2 id="scenarios-in-jasmine-tests">Scenarios In Jasmine tests</h2>
+
+<p>Write your scenarios like this</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">scenarios</span> <span class="o">=</span> <span class="p">[{</span>
+        <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Input is an even number</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">input</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="na">expected_output</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Input is a string</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">input</span><span class="p">:</span> <span class="dl">'</span><span class="s1">string</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">expected_output</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Input is a number in string</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">input</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">expected_output</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Input is an odd number</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">input</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="na">expected_output</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div></div>
+<p>You can see that we just make a separate object for every test case and write all required data for a test in it. Now change your test like this</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">scenarios</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+	<span class="nx">it</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+	    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">evenOrOdd</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">input</span><span class="p">);</span>
+	    <span class="nx">expect</span><span class="p">(</span><span class="nx">result</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">expected_output</span><span class="p">);</span>
+        <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Now when you will run your tests, you will see same output as before. This is how we can use scenarios to avoid repetition of code in our tests.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>You can do a lot more with Jasmine like function related-matchers, spies and many more things.You can check detailed documentation from here. Jasmine can be used to test JavaScript code in you Django, Flask or Ruby project.</p>
+:ET

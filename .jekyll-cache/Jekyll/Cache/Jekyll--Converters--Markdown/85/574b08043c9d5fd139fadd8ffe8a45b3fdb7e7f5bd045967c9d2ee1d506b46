@@ -1,0 +1,74 @@
+I"Ó<p>FFmpeg is A complete, cross-platform solution to record, convert and stream audio and video. You can download it from here and install it by following this link for your platform. Detailed documentation of FFmpeg can be seen here. In this post, I will discuss how to user FFmpeg with Python.</p>
+
+<!--more-->
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="ubuntu">Ubuntu</h3>
+<p>On Ubuntu, you can install by running following command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>ffmpeg
+</code></pre></div></div>
+
+<h3 id="windowsmac">Windows/Mac</h3>
+<p>You can download and install you OS specific binaries from <a href="https://ffmpeg.org/download.html">link</a>.</p>
+
+<h2 id="creating-thumbnail">Creating Thumbnail</h2>
+
+<p>Python have a wrapper for FFmpeg called FFmpy. You can see its documentation here. You can install it by running following command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>ffmpy
+</code></pre></div></div>
+
+<p>The command to use FFmpeg to create thumbnail of a video is below</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-ss</span> 00:00:04 <span class="nt">-vframes</span> 1 output.png
+</code></pre></div></div>
+
+<ol>
+  <li>input.mp4 is input video</li>
+  <li>00:00:04 is the position of thumbnail in video</li>
+  <li>-vframes 1 shows number of frames you want to get</li>
+  <li>output.png is the output image at provided position</li>
+</ol>
+
+<p>This command can be converted into python by following code.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">ffmpy</span> <span class="kn">import</span> <span class="n">FFmpeg</span>
+
+<span class="n">ff</span> <span class="o">=</span> <span class="n">FFmpeg</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s">'input.mp4'</span><span class="p">:</span> <span class="bp">None</span><span class="p">},</span> <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s">"output.png"</span><span class="p">:</span> <span class="p">[</span><span class="s">'-ss'</span><span class="p">,</span> <span class="s">'00:00:4'</span><span class="p">,</span> <span class="s">'-vframes'</span><span class="p">,</span> <span class="s">'1'</span><span class="p">]})</span>
+
+<span class="k">print</span> <span class="n">ff</span><span class="o">.</span><span class="n">cmd</span>
+
+<span class="c1"># Print result
+# ffmpeg -i input.mp4 -ss 00:00:10 -vframes 1 output.png
+</span>
+<span class="n">ff</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>In the above command, one frame was created. If you want to get multiple frames, you can use following command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-i</span> input.mp4 <span class="nt">-vf</span> <span class="nv">fps</span><span class="o">=</span>1 out%d.png
+</code></pre></div></div>
+<ol>
+  <li>-vf fps=1 mean create frame after one minute</li>
+</ol>
+
+<p>This will be done in python like this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">ffmpy</span> <span class="kn">import</span> <span class="n">FFmpeg</span>
+
+<span class="n">ff</span> <span class="o">=</span> <span class="n">FFmpeg</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s">'input.mp4'</span><span class="p">:</span> <span class="bp">None</span><span class="p">},</span> <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s">"out</span><span class="si">%</span><span class="s">d.png"</span><span class="p">:</span> <span class="p">[</span><span class="s">'-vf'</span><span class="p">,</span> <span class="s">'fps=1'</span><span class="p">]})</span>
+
+<span class="k">print</span> <span class="n">ff</span><span class="o">.</span><span class="n">cmd</span>
+
+<span class="c1"># Print result
+#ffmpeg -i input.mp4 -vf fps=1 out%d.png
+</span>
+<span class="n">ff</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>With above mentioned way of extracting video thumbnail using FFmpeg with python wrapper, we can run many more commands.</p>
+:ET
