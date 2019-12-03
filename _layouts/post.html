@@ -20,7 +20,7 @@ layout: default
           {% if page.tags.size >= 1 %}
           <div>
             {% for tag in page.tags %}
-              <a href="{{ site.baseurl }}/tag/{{ tag|downcase }}" class="post-tag"><i class="fi-xwluxl-label-wide"></i>{{ tag }}</a>
+              <a href="{{ site.baseurl }}/tags/#{{ tag|downcase }}" class="post-tag"><i class="fi-xwluxl-label-wide"></i>{{ tag }}</a>
             {% endfor %}
           </div>
           {% endif %}
