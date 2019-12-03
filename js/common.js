@@ -90,6 +90,12 @@ $(document).ready(function() {
       .stop()
       .animate({ scrollTop: 0 }, "slow", "swing");
   });
+
+  $(".tag-box").click(function() {
+    let elm = $(this).attr('data-target');
+    $('html,body').animate({scrollTop: $(elm).offset().top}, 'slow');
+  });
+
   $(window).scroll(function() {
     if ($(this).scrollTop() > $(window).height()) {
       $(".top").addClass("is-active");

@@ -16,3 +16,35 @@
     margin-bottom: 40px;
   }
 }
+
+.tag-box{
+    color: $link-color;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid $link-color;
+    padding: 7px 4px 4px 4px;
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.tag-box:hover {
+  color: white;
+  background-color: $link-color;
+}
+
+.post-title a {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.posted-date{
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: #bbb;
+}

@@ -44,6 +44,11 @@
       border-radius: 4px;
     }
 
+    .article__tag:hover {
+      color: white;
+      background-color: $link-color;
+    }
+
     .article__title {
       margin-bottom: 20px;
       font-size: 30px;
