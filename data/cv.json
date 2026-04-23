@@ -1,0 +1,224 @@
+{
+  "personal_info": {
+    "name": "Muhammad Hassan Siddiqui",
+    "title": "Principal Software Engineer",
+    "tagline": "Backend engineer specializing in Python, Django, and scalable web systems",
+    "location": "Lahore, Pakistan"
+  },
+  "about_me": {
+    "from_date": "2014-02",
+    "text": "{years}+ years of building backend systems that hold up in production — APIs, data pipelines, scrapers, and conversational AI services. Python and Django are home ground; I've shipped across ed-tech, sports analytics, and loyalty platforms. These days I lead teams, own architecture decisions, and mentor engineers through the same rabbit holes I came up through."
+  },
+  "skills": [
+    { "name": "Python", "icon": "python", "expertise": 10 },
+    { "name": "JavaScript", "icon": "javascript", "expertise": 8 },
+    { "name": "TypeScript", "icon": "typescript", "expertise": 7 },
+    { "name": "SQL", "icon": "mysql", "expertise": 9 },
+    { "name": "HTML", "icon": "html5", "expertise": 8 },
+    { "name": "CSS", "icon": "css3", "expertise": 7 },
+    { "name": "Django", "icon": "django", "expertise": 10 },
+    { "name": "Flask", "icon": "flask", "expertise": 8 },
+    { "name": "FastAPI", "icon": "fastapi", "expertise": 8 },
+    { "name": "DRF", "icon": "django", "expertise": 9 },
+    { "name": "ReactJS", "icon": "react", "expertise": 7 },
+    { "name": "NextJS", "icon": "nextdotjs", "expertise": 7 },
+    { "name": "Celery", "icon": "celery", "expertise": 9 },
+    { "name": "Scrapy", "icon": "scrapy", "expertise": 8 },
+    { "name": "Django-Q", "icon": "django", "expertise": 8 },
+    { "name": "Selenium", "icon": "selenium", "expertise": 7 },
+    { "name": "OpenEdx", "icon": "edx", "expertise": 8 },
+    { "name": "Bootstrap", "icon": "bootstrap", "expertise": 7 },
+    { "name": "SqlAlchemy", "icon": "sqlalchemy", "expertise": 8 },
+    { "name": "TailwindCSS", "icon": "tailwindcss", "expertise": 7 },
+    { "name": "AlpineJS", "icon": "alpinedotjs", "expertise": 6 },
+    { "name": "MySQL", "icon": "mysql", "expertise": 9 },
+    { "name": "PostgreSQL", "icon": "postgresql", "expertise": 9 },
+    { "name": "SQLite3", "icon": "sqlite", "expertise": 8 },
+    { "name": "Redis", "icon": "redis", "expertise": 8 },
+    { "name": "MongoDB", "icon": "mongodb", "expertise": 7 },
+    { "name": "ElasticSearch", "icon": "elasticsearch", "expertise": 7 },
+    { "name": "Amazon EC2", "icon": "amazonec2", "expertise": 8 },
+    { "name": "Amazon Elastic Beanstalk", "icon": "amazonaws", "expertise": 7 },
+    { "name": "Amazon RDS", "icon": "amazonrds", "expertise": 8 },
+    { "name": "Amazon S3", "icon": "amazons3", "expertise": 9 },
+    { "name": "Amazon ECS", "icon": "amazonecs", "expertise": 7 },
+    { "name": "Docker", "icon": "docker", "expertise": 9 },
+    { "name": "Jenkins", "icon": "jenkins", "expertise": 7 },
+    { "name": "Apache Airflow", "icon": "apacheairflow", "expertise": 7 },
+    { "name": "Pandas", "icon": "pandas", "expertise": 8 },
+    { "name": "Sentry", "icon": "sentry", "expertise": 8 },
+    { "name": "NewRelic", "icon": "newrelic", "expertise": 7 },
+    { "name": "Python Fabric", "icon": "python", "expertise": 7 },
+    { "name": "Gunicorn", "icon": "gunicorn", "expertise": 8 },
+    { "name": "uWSGI", "icon": "python", "expertise": 7 },
+    { "name": "Nginx", "icon": "nginx", "expertise": 8 },
+    { "name": "Supervisor", "icon": "linux", "expertise": 7 }
+  ],
+  "experience": [
+    {
+      "company": "Arbisoft",
+      "role": "Principal Software Engineer",
+      "start": "2021-03",
+      "end": null,
+      "location": "Lahore, Pakistan",
+      "highlights": [
+        "Lead architecture on client products including Toastmasters International's data migration platform and Supercal's AI scheduling service.",
+        "Design and ship complex backend features end-to-end — schema, APIs, task queues, and deployment.",
+        "Mentor junior engineers through their first production-scale Python and Django codebases.",
+        "Run technical planning and cross-team coordination through requirements, delivery, and release."
+      ]
+    },
+    {
+      "company": "The Entertainer",
+      "role": "Principal Software Engineer",
+      "start": "2020-03",
+      "end": "2021-03",
+      "location": "",
+      "highlights": [
+        "Designed and shipped APIs powering the Entertainer and Munch consumer apps.",
+        "Built Scrapy-based scrapers that pulled merchant and outlet data from multiple vendors.",
+        "Wrote scheduled jobs keeping merchant and outlet catalogs in sync with upstream sources.",
+        "Designed and implemented a loyalty system shared across multiple consumer products."
+      ]
+    },
+    {
+      "company": "Fiverivers Technologies",
+      "role": "Senior Software Engineer",
+      "start": "2017-01",
+      "end": "2020-03",
+      "location": "Lahore, Pakistan",
+      "highlights": [
+        "Designed backend architecture and APIs powering mobile apps and admin dashboards across multiple clients.",
+        "Engineered performance-scoring algorithms for basketball shooting drills in the Ballogy app.",
+        "Led the engineering team through planning, delivery, and cross-team coordination.",
+        "Owned production deployments and live-server monitoring for the team's products."
+      ]
+    },
+    {
+      "company": "QC Technologies",
+      "role": "Software Engineer",
+      "start": "2014-08",
+      "end": "2016-12",
+      "location": "Lahore, Pakistan",
+      "highlights": [
+        "Shipped new features and change requests against client specifications.",
+        "Wrote unit and functional tests to keep the codebase stable across releases."
+      ]
+    },
+    {
+      "company": "KICS, UET Lahore",
+      "role": "Research Officer Grade III",
+      "start": "2014-02",
+      "end": "2014-08",
+      "location": "Lahore, Pakistan",
+      "highlights": [
+        "Contributed to NLP research projects at the Al-Khawarizmi Institute of Computer Science — work that led to a published paper on Punjabi Shahmukhi stemming."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Toastmasters International — Data Migration",
+      "description": "Data migration platform for Toastmasters International — moving member, club, and program data from a legacy system to a new platform across a global network of clubs.",
+      "tech": ["Python", "Django", "PostgreSQL"],
+      "contributions": [
+        "Built the migration pipelines that moved member, club, and program data off the legacy system.",
+        "Designed a rule-based validation engine that flagged data-quality issues and produced reports across data points.",
+        "Built a data-cleaning framework that enforced integrity before records reached the new platform.",
+        "Architected the migration to run at scale — batched, resumable, and safe to re-run on failures."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "Advance Learning World",
+      "description": "Ed-tech platform serving schools and individual learners with personalized learning paths, progress reporting, and recommendation tools.",
+      "tech": ["Python", "Django"],
+      "contributions": [
+        "Added multi-tenant support so schools could onboard as B2B clients alongside individual learners.",
+        "Shipped weekly progress reports for students and a separate reporting view for B2B teachers.",
+        "Built a recommendation engine that surfaced each student's weakest areas for focused practice.",
+        "Built a shared question bank spanning teacher and student workflows.",
+        "Built the end-of-year promotion system that advanced students to the next grade."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "Ballogy",
+      "description": "Sports analytics platform for basketball — skill assessment, development tracking, and coaching tools.",
+      "tech": ["Python", "Django"],
+      "contributions": [
+        "Built the shooting-test management system that captures and scores basketball drills.",
+        "Built the coach panel that lets coaches track, compare, and evaluate athletes.",
+        "Drove architecture decisions as the product grew in scope and traffic.",
+        "Scaled the backend to handle thousands of concurrent users and spiky test-day traffic."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "Supercal",
+      "description": "Email-based meeting scheduler that uses AI to coordinate group availability and eliminate the back-and-forth. Built with Django on AWS.",
+      "tech": ["Python", "Django", "AWS"],
+      "contributions": [
+        "Designed and built the backend for the conversational AI module that parses email replies and drives scheduling decisions.",
+        "Built the conversational service that coordinates group availability over email threads.",
+        "Built the backend APIs supporting the rest of the product surface."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "Eaziex",
+      "description": "Classified-ads platform with a flexible, category-specific form and filter engine — each ad category defines its own fields and its own searchable filters.",
+      "tech": ["Python", "Django", "ReactJS", "NextJS"],
+      "contributions": [
+        "Designed the full backend architecture from scratch.",
+        "Built a form-management system that lets admins compose a different ad form per category.",
+        "Built the matching filter engine so each category's ads could be searched by its own fields.",
+        "Built the customer-facing frontend in ReactJS and NextJS."
+      ],
+      "links": { "live": null, "repo": null }
+    }
+  ],
+  "education": [
+    {
+      "institution": "Punjab University College of Information Technology",
+      "degree": "M.Phil Computer Science",
+      "start": "2015",
+      "end": "2018",
+      "location": "Lahore, Pakistan"
+    },
+    {
+      "institution": "University of Engineering and Technology, Lahore",
+      "degree": "BS Electrical Engineering",
+      "start": "2009",
+      "end": "2013",
+      "location": "Lahore, Pakistan"
+    }
+  ],
+  "open_source_contributions": [
+    "dj-rest-filters",
+    "django-error-report",
+    "cmd-manager",
+    "django-bongpy",
+    "alpine-forms",
+    "fastapi-boilerplate"
+  ],
+  "publications": [
+    {
+      "authors": "Mateen, Abdul, M. Kamran Malik, Zubair Nawaz, H.M. Danish, M. Hassan Siddiqui, and Qaiser Abbas",
+      "title": "A Hybrid Stemmer of Punjabi Shahmukhi Script",
+      "venue": "IJCSNS",
+      "volume": "17, no. 8",
+      "year": 2017,
+      "page": 90
+    }
+  ],
+  "contact": {
+    "email": "mhassan.eeng@gmail.com",
+    "mobile": "+92-323-6404854",
+    "location": "Lahore, Pakistan",
+    "website": "https://mhsiddiqui.github.io",
+    "github": "https://github.com/mhsiddiqui",
+    "linkedin": "https://linkedin.com/in/m-hassan-siddiqui1991",
+    "stackoverflow": "https://stackoverflow.com/users/5532516/muhammad-hassan"
+  }
+}
