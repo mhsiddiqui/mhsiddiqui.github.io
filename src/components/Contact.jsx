@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
 
-export default function Contact({ contact }) {
+export default function Contact({ contact, strings }) {
   const links = [
     {
       icon: 'mdi:email-outline',
@@ -44,7 +44,7 @@ export default function Contact({ contact }) {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 py-24 md:py-32"
+      className="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-600 to-green-600 py-24 md:py-32"
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-20"
@@ -66,11 +66,10 @@ export default function Contact({ contact }) {
             Contact
           </p>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Let's build something together.
+            {strings.contact_heading}
           </h2>
           <p className="text-lg text-white/80">
-            Always open to new projects, collaborations, and interesting
-            problems.
+            {strings.contact_subheading}
           </p>
         </motion.div>
 

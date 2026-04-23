@@ -20,7 +20,7 @@ export default function Section({
             className="mb-12"
           >
             {eyebrow && (
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-emerald-600">
                 {eyebrow}
               </p>
             )}

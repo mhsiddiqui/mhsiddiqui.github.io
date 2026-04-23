@@ -9,9 +9,9 @@ export default function ProjectCard({ project, index = 0 }) {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       whileHover={{ y: -4 }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 transition-all duration-300 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100/50"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 transition-all duration-300 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-100/50"
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
       <div className="flex items-start justify-between gap-4">
         <h3 className="text-lg font-semibold text-neutral-900 transition-colors group-hover:text-gradient md:text-xl">
@@ -24,7 +24,7 @@ export default function ProjectCard({ project, index = 0 }) {
               target="_blank"
               rel="noreferrer"
               aria-label="Live demo"
-              className="transition hover:text-indigo-600"
+              className="transition hover:text-emerald-600"
             >
               <Icon icon="mdi:open-in-new" className="h-5 w-5" />
             </a>
@@ -35,7 +35,7 @@ export default function ProjectCard({ project, index = 0 }) {
               target="_blank"
               rel="noreferrer"
               aria-label="Repository"
-              className="transition hover:text-indigo-600"
+              className="transition hover:text-emerald-600"
             >
               <Icon icon="mdi:github" className="h-5 w-5" />
             </a>
@@ -48,7 +48,7 @@ export default function ProjectCard({ project, index = 0 }) {
           {project.tech.map((t) => (
             <span
               key={t}
-              className="rounded-md bg-gradient-to-br from-indigo-50 to-purple-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-indigo-100"
+              className="rounded-md bg-gradient-to-br from-emerald-50 to-teal-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-emerald-100"
             >
               {t}
             </span>
@@ -59,7 +59,7 @@ export default function ProjectCard({ project, index = 0 }) {
         {project.contributions.map((c, i) => (
           <li key={i} className="flex gap-2.5">
             <span
-              className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500"
+              className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500"
               aria-hidden
             />
             <span>{c}</span>

@@ -15,14 +15,14 @@ export default function Education({ education }) {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             whileHover={{ y: -3 }}
-            className="group flex gap-4 rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-100/50"
+            className="group flex gap-4 rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100/50"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white">
               <Icon icon="mdi:school-outline" className="h-6 w-6" />
             </div>
             <div className="min-w-0">
               <h3 className="font-semibold text-neutral-900">{e.degree}</h3>
-              <p className="mt-0.5 text-sm font-medium text-indigo-600">
+              <p className="mt-0.5 text-sm font-medium text-emerald-600">
                 {e.institution}
               </p>
               <p className="mt-1 text-sm text-neutral-500">

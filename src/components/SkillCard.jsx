@@ -2,45 +2,37 @@ import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
 
 export default function SkillCard({ skill, index = 0 }) {
-  const pct = (skill.expertise / 10) * 100
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.4, delay: Math.min(index * 0.02, 0.3) }}
-      whileHover={{ y: -3 }}
-      className="group rounded-xl border border-neutral-200 bg-white p-4 transition-all duration-200 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-100/60"
+      transition={{
+        duration: 0.35,
+        delay: Math.min(index * 0.02, 0.3),
+        ease: 'easeOut',
+      }}
+      whileHover={{ y: -5 }}
+      className="group relative flex flex-col items-center gap-3 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 text-center transition-all duration-300 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-100/60"
     >
-      <div className="mb-3 flex items-center gap-2">
-        <Icon
-          icon={`simple-icons:${skill.icon}`}
-          className="h-5 w-5 shrink-0 text-neutral-700 transition-colors group-hover:text-indigo-600"
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-emerald-50/0 via-emerald-50/0 to-teal-50/0 opacity-0 transition-opacity duration-300 group-hover:from-emerald-50/60 group-hover:via-white group-hover:to-teal-50/60 group-hover:opacity-100" />
+
+      <div className="relative">
+        <div
+          className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-400 opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-40"
+          aria-hidden
         />
-        <span className="truncate text-sm font-medium text-neutral-800">
-          {skill.name}
-        </span>
-        <span className="ml-auto font-mono text-xs text-neutral-500">
-          {skill.expertise}/10
-        </span>
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 ring-1 ring-emerald-100 transition-all duration-300 group-hover:from-emerald-500 group-hover:to-teal-500 group-hover:ring-emerald-400 group-hover:ring-offset-2 group-hover:ring-offset-white">
+          <Icon
+            icon={`simple-icons:${skill.icon}`}
+            className="h-7 w-7 text-emerald-700 transition-colors duration-300 group-hover:text-white"
+          />
+        </div>
       </div>
-      <div
-        className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100"
-        role="progressbar"
-        aria-valuenow={skill.expertise}
-        aria-valuemin={0}
-        aria-valuemax={10}
-        aria-label={`${skill.name} expertise`}
-      >
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${pct}%` }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 1, delay: 0.2 + Math.min(index * 0.02, 0.3), ease: 'easeOut' }}
-          className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
-        />
-      </div>
+
+      <span className="text-sm font-medium text-neutral-800 transition-colors duration-300 group-hover:text-emerald-700">
+        {skill.name}
+      </span>
     </motion.div>
   )
 }

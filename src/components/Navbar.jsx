@@ -40,14 +40,14 @@ export default function Navbar({ name }) {
           href="#top"
           className="text-lg font-bold tracking-tight text-gradient"
         >
-          {name[0]} {name.split(' ')[1]}.
+          {name}
         </a>
         <ul className="hidden gap-8 md:flex">
           {navItems.map((item) => (
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className="text-sm font-medium text-neutral-700 transition hover:text-indigo-600"
+                className="text-sm font-medium text-neutral-700 transition hover:text-emerald-600"
               >
                 {item.label}
               </a>
@@ -75,7 +75,7 @@ export default function Navbar({ name }) {
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className="block py-2 text-sm font-medium text-neutral-700 hover:text-indigo-600"
+                className="block py-2 text-sm font-medium text-neutral-700 hover:text-emerald-600"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

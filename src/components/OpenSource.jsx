@@ -40,14 +40,14 @@ function RepoCard({ repo, index }) {
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       whileHover={{ y: -3 }}
-      className="group flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-100/50"
+      className="group flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100/50"
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 text-white">
           <Icon icon="mdi:source-branch" className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-medium text-neutral-900 transition-colors group-hover:text-indigo-600">
+          <h3 className="truncate font-medium text-neutral-900 transition-colors group-hover:text-emerald-600">
             {repo.name}
           </h3>
           {repo.description && (
@@ -56,7 +56,7 @@ function RepoCard({ repo, index }) {
         </div>
         <Icon
           icon="mdi:arrow-top-right"
-          className="h-5 w-5 shrink-0 text-neutral-400 transition-colors group-hover:text-indigo-600"
+          className="h-5 w-5 shrink-0 text-neutral-400 transition-colors group-hover:text-emerald-600"
         />
       </div>
       {(repo.language || repo.stargazers_count > 0 || repo.forks_count > 0) && (
@@ -138,7 +138,7 @@ export default function OpenSource({ repos: slugs, githubUrl }) {
     <Section
       id="open-source"
       title="Open Source"
-      className="bg-gradient-to-b from-white via-pink-50/30 to-white"
+      className="bg-gradient-to-b from-white via-green-50/30 to-white"
     >
       {data === null && !failed ? (
         <SkeletonGrid count={slugs?.length || 6} />

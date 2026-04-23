@@ -12,18 +12,18 @@ export default function TimelineItem({ item, isLast, index = 0 }) {
     >
       {!isLast && (
         <div
-          className="absolute left-[11px] top-6 h-full w-0.5 bg-gradient-to-b from-indigo-300 via-purple-300 to-pink-200"
+          className="absolute left-[11px] top-6 h-full w-0.5 bg-gradient-to-b from-emerald-300 via-teal-300 to-green-200"
           aria-hidden
         />
       )}
       <div
-        className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 ring-4 ring-white"
+        className="absolute left-0 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 ring-4 ring-white"
         aria-hidden
       >
         <div className="h-2 w-2 rounded-full bg-white" />
       </div>
 
-      <div className="rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-100/50">
+      <div className="rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100/50">
         <div className="flex flex-wrap items-baseline gap-x-2">
           <h3 className="text-lg font-semibold text-neutral-900 md:text-xl">
             {item.role}
@@ -39,7 +39,7 @@ export default function TimelineItem({ item, isLast, index = 0 }) {
           {item.highlights.map((h, i) => (
             <li key={i} className="flex gap-3">
               <span
-                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500"
+                className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500"
                 aria-hidden
               />
               <span>{h}</span>

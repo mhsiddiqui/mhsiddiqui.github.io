@@ -1,7 +1,8 @@
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
+import DownloadResumeButton from './DownloadResumeButton'
 
-export default function Hero({ personalInfo, contact }) {
+export default function Hero({ cv, personalInfo, contact }) {
   const socials = [
     { icon: 'mdi:email-outline', href: `mailto:${contact.email}`, label: 'Email' },
     { icon: 'mdi:github', href: contact.github, label: 'GitHub' },
@@ -13,15 +14,15 @@ export default function Hero({ personalInfo, contact }) {
   return (
     <section id="top" className="relative overflow-hidden -mt-16 pt-16">
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="animate-blob absolute -left-20 top-20 h-96 w-96 rounded-full bg-indigo-400/30 blur-3xl" />
-        <div className="animate-blob-delay absolute right-0 top-1/3 h-96 w-96 rounded-full bg-purple-400/30 blur-3xl" />
-        <div className="animate-blob-delay-2 absolute bottom-10 left-1/3 h-96 w-96 rounded-full bg-pink-400/30 blur-3xl" />
+        <div className="animate-blob absolute -left-20 top-20 h-96 w-96 rounded-full bg-emerald-400/30 blur-3xl" />
+        <div className="animate-blob-delay absolute right-0 top-1/3 h-96 w-96 rounded-full bg-teal-400/30 blur-3xl" />
+        <div className="animate-blob-delay-2 absolute bottom-10 left-1/3 h-96 w-96 rounded-full bg-green-400/30 blur-3xl" />
       </div>
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 1px 1px, rgba(99,102,241,0.15) 1px, transparent 0)',
+            'radial-gradient(circle at 1px 1px, rgba(16,185,129,0.15) 1px, transparent 0)',
           backgroundSize: '32px 32px',
         }}
       />
@@ -36,7 +37,7 @@ export default function Hero({ personalInfo, contact }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white/70 px-4 py-1.5 text-sm font-medium text-indigo-700 backdrop-blur"
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/70 px-4 py-1.5 text-sm font-medium text-emerald-700 backdrop-blur"
           >
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -72,22 +73,25 @@ export default function Hero({ personalInfo, contact }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-10 flex flex-wrap gap-3"
+            className="mt-10 flex flex-wrap items-center gap-4"
           >
-            {socials.map((s) => (
-              <motion.a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={s.label}
-                whileHover={{ y: -3, scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white/80 text-neutral-700 shadow-sm backdrop-blur transition-colors hover:border-indigo-400 hover:text-indigo-600"
-              >
-                <Icon icon={s.icon} className="h-5 w-5" />
-              </motion.a>
-            ))}
+            <DownloadResumeButton cv={cv} />
+            <div className="flex flex-wrap gap-3">
+              {socials.map((s) => (
+                <motion.a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  whileHover={{ y: -3, scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white/80 text-neutral-700 shadow-sm backdrop-blur transition-colors hover:border-emerald-400 hover:text-emerald-600"
+                >
+                  <Icon icon={s.icon} className="h-5 w-5" />
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
       </div>

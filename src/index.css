@@ -30,8 +30,15 @@ body {
   animation-delay: -12s;
 }
 
+/* Brand palette — to retheme the whole site, edit these three colors */
+:root {
+  --brand-1: #059669; /* emerald-600 */
+  --brand-2: #10b981; /* emerald-500 */
+  --brand-3: #14b8a6; /* teal-500 */
+}
+
 .text-gradient {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 50%, var(--brand-3) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
