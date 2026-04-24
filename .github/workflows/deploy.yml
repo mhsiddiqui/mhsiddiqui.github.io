@@ -28,6 +28,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_CV_URL: ${{ secrets.VITE_CV_URL }}
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
