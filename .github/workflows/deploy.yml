@@ -13,6 +13,7 @@ permissions:
 jobs:
   build_site:
     runs-on: ubuntu-latest
+    environment: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +29,7 @@ jobs:
 
       - name: Verify build-time env
         env:
-          VITE_CV_URL: ${{ secrets.VITE_CV_URL }}
+          VITE_CV_URL: ${{ vars.VITE_CV_URL }}
           VITE_USE_REMOTE_CV: ${{ vars.VITE_USE_REMOTE_CV }}
         run: |
           if [ -z "$VITE_CV_URL" ]; then
@@ -41,7 +42,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_CV_URL: ${{ secrets.VITE_CV_URL }}
+          VITE_CV_URL: ${{ vars.VITE_CV_URL }}
           VITE_USE_REMOTE_CV: ${{ vars.VITE_USE_REMOTE_CV }}
 
       - name: Upload Artifacts
