@@ -12,6 +12,7 @@ import Publications from './components/Publications'
 import Contact from './components/Contact'
 
 const CV_URL = import.meta.env.VITE_CV_URL || null
+const USE_REMOTE_CV = import.meta.env.VITE_USE_REMOTE_CV !== 'false'
 
 function mergeWithBundled(remote) {
   const merged = { ...bundledPortfolio, ...remote }
@@ -36,9 +37,16 @@ export default function App() {
   const [cv, setCv] = useState(bundledPortfolio)
 
   useEffect(() => {
-    if (!CV_URL) return
+    if (!USE_REMOTE_CV) {
+      console.log('[CV] VITE_USE_REMOTE_CV=false — using bundled portfolio')
+      return
+    }
+    if (!CV_URL) {
+      console.log('[CV] No VITE_CV_URL at build time — using bundled portfolio')
+      return
+    }
 
-    console.log('[CV] Fetching remote data...')
+    console.log('[CV] Fetching remote data from', CV_URL)
     const ctrl = new AbortController()
     fetch(CV_URL, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
@@ -63,10 +71,7 @@ export default function App() {
       <Experience experience={cv.experience} />
       <Projects projects={cv.projects} />
       <Education education={cv.education} />
-      <OpenSource
-        repos={cv.open_source_contributions}
-        githubUrl={cv.contact.github}
-      />
+      <OpenSource repos={cv.open_source_contributions} />
       <Publications publications={cv.publications} />
       <Contact contact={cv.contact} strings={cv.strings} />
       <footer className="bg-neutral-900 py-8 text-center text-sm text-neutral-400">

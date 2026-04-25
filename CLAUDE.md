@@ -13,6 +13,7 @@ No test runner and no linter are configured — don't assume `npm test` or `npm 
 ## Environment
 
 - `VITE_CV_URL` (optional) — raw URL to a remote `portfolio.json` (typically a GitHub Gist). If unset, the app uses only the bundled `data/portfolio.json`. Configured via `.env` locally and as a GitHub Secret for the deploy workflow.
+- `VITE_USE_REMOTE_CV` (optional, default `true`) — set to `false` to skip the remote fetch entirely and use only the bundled JSON, even when `VITE_CV_URL` is set. Useful for disabling the gist without removing the URL. Wired through the deploy workflow as a GitHub Actions Variable (`vars.VITE_USE_REMOTE_CV`).
 
 ## Architecture
 
@@ -35,11 +36,7 @@ Gist edits propagate after a ~5-minute CDN cache on `raw.githubusercontent.com`.
 
 Each visible region of the page is a component under `src/components/` (`About`, `Skills`, `Experience`, `Projects`, `Education`, `OpenSource`, `Publications`, `Contact`, plus `Hero` and `Navbar`). They share `Section.jsx` for the outer `<section id="…">` + gradient section-title treatment, so scroll-anchor IDs and spacing stay consistent. Repeating items inside a section have their own inner components (`SkillCard`, `TimelineItem`, `ProjectCard`) — keep that split when adding new sections.
 
-Sections don't fetch their own data. The one exception is `OpenSource`:
-
-### OpenSource section pulls from GitHub live
-
-`portfolio.json` → `open_source_contributions` is a **flat array of GitHub repo slugs** (not objects, not descriptions). `OpenSource.jsx` extracts the username from `contact.github`, then fetches `https://api.github.com/repos/{username}/{slug}` for each slug in parallel via `Promise.allSettled`, sorts results by star count, and renders name/description/language/stars/forks from the live API response. One bad slug doesn't break the rest; if the whole fetch fails or returns nothing, an error placeholder shows. The unauth GitHub API cap is 60 req/hour per IP.
+Sections don't fetch their own data — `OpenSource` renders straight from `open_source_contributions` in the JSON (each entry is `{ name, description, language, url }`). The earlier live-GitHub-API fetch was removed because the unauth 60/hour rate limit hit too easily and the listed repos rarely change; update star counts or descriptions in the JSON / gist instead.
 
 ### PDF resume is a parallel render target
 

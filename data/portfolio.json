@@ -196,12 +196,42 @@
     }
   ],
   "open_source_contributions": [
-    "dj-rest-filters",
-    "django-error-report",
-    "cmd-manager",
-    "django-bongpy",
-    "alpine-forms",
-    "fastapi-boilerplate"
+    {
+      "name": "dj-rest-filters",
+      "description": "Declarative query filters for Django REST Framework views.",
+      "language": "Python",
+      "url": "https://github.com/mhsiddiqui/dj-rest-filters"
+    },
+    {
+      "name": "django-error-report",
+      "description": "Surface unhandled Django exceptions inside the admin for quick triage.",
+      "language": "Python",
+      "url": "https://github.com/mhsiddiqui/django-error-report"
+    },
+    {
+      "name": "cmd-manager",
+      "description": "Small helper for organising and running project shell commands.",
+      "language": "Python",
+      "url": "https://github.com/mhsiddiqui/cmd-manager"
+    },
+    {
+      "name": "django-bongpy",
+      "description": "Django integration helpers around the BongPy toolkit.",
+      "language": "Python",
+      "url": "https://github.com/mhsiddiqui/django-bongpy"
+    },
+    {
+      "name": "alpine-forms",
+      "description": "Form helpers and validation utilities for Alpine.js.",
+      "language": "JavaScript",
+      "url": "https://github.com/mhsiddiqui/alpine-forms"
+    },
+    {
+      "name": "fastapi-boilerplate",
+      "description": "Opinionated FastAPI starter with auth, database, and background tasks pre-wired.",
+      "language": "Python",
+      "url": "https://github.com/mhsiddiqui/fastapi-boilerplate"
+    }
   ],
   "publications": [
     {
