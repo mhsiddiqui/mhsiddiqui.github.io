@@ -26,6 +26,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Verify build-time env
+        env:
+          VITE_CV_URL: ${{ secrets.VITE_CV_URL }}
+          VITE_USE_REMOTE_CV: ${{ vars.VITE_USE_REMOTE_CV }}
+        run: |
+          if [ -z "$VITE_CV_URL" ]; then
+            echo "VITE_CV_URL: NOT SET (build will fall back to bundled JSON)"
+          else
+            echo "VITE_CV_URL: set (length=${#VITE_CV_URL})"
+          fi
+          echo "VITE_USE_REMOTE_CV: ${VITE_USE_REMOTE_CV:-<unset, defaults to true>}"
+
       - name: Build
         run: npm run build
         env:
