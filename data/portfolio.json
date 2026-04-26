@@ -15,45 +15,33 @@
     { "name": "JavaScript", "icon": "javascript" },
     { "name": "TypeScript", "icon": "typescript" },
     { "name": "SQL", "icon": "mysql" },
-    { "name": "HTML", "icon": "html5" },
-    { "name": "CSS", "icon": "css3" },
     { "name": "Django", "icon": "django" },
     { "name": "Flask", "icon": "flask" },
     { "name": "FastAPI", "icon": "fastapi" },
-    { "name": "DRF", "icon": "django" },
+    { "name": "asyncio", "icon": "python" },
+    { "name": "SqlAlchemy", "icon": "sqlalchemy" },
+    { "name": "Celery", "icon": "celery" },
+    { "name": "Selenium", "icon": "selenium" },
+    { "name": "Scrapy", "icon": "scrapy" },
+    { "name": "Pandas", "icon": "pandas" },
+    { "name": "pytest", "icon": "pytest" },
+    { "name": "OpenAI SDK", "icon": "openai" },
     { "name": "ReactJS", "icon": "react" },
     { "name": "NextJS", "icon": "nextdotjs" },
-    { "name": "Celery", "icon": "celery" },
-    { "name": "Scrapy", "icon": "scrapy" },
-    { "name": "Django-Q", "icon": "django" },
-    { "name": "Selenium", "icon": "selenium" },
-    { "name": "OpenEdx", "icon": "edx" },
-    { "name": "Bootstrap", "icon": "bootstrap" },
-    { "name": "SqlAlchemy", "icon": "sqlalchemy" },
     { "name": "TailwindCSS", "icon": "tailwindcss" },
-    { "name": "AlpineJS", "icon": "alpinedotjs" },
     { "name": "MySQL", "icon": "mysql" },
     { "name": "PostgreSQL", "icon": "postgresql" },
-    { "name": "SQLite3", "icon": "sqlite" },
     { "name": "Redis", "icon": "redis" },
     { "name": "MongoDB", "icon": "mongodb" },
     { "name": "ElasticSearch", "icon": "elasticsearch" },
-    { "name": "Amazon EC2", "icon": "amazonec2" },
-    { "name": "Amazon Elastic Beanstalk", "icon": "amazonaws" },
-    { "name": "Amazon RDS", "icon": "amazonrds" },
-    { "name": "Amazon S3", "icon": "amazons3" },
-    { "name": "Amazon ECS", "icon": "amazonecs" },
+    { "name": "AWS", "icon": "amazonaws" },
     { "name": "Docker", "icon": "docker" },
-    { "name": "Jenkins", "icon": "jenkins" },
-    { "name": "Apache Airflow", "icon": "apacheairflow" },
-    { "name": "Pandas", "icon": "pandas" },
-    { "name": "Sentry", "icon": "sentry" },
-    { "name": "NewRelic", "icon": "newrelic" },
-    { "name": "Python Fabric", "icon": "python" },
-    { "name": "Gunicorn", "icon": "gunicorn" },
-    { "name": "uWSGI", "icon": "python" },
     { "name": "Nginx", "icon": "nginx" },
-    { "name": "Supervisor", "icon": "linux" }
+    { "name": "Jenkins", "icon": "jenkins" },
+    { "name": "GitHub Actions", "icon": "githubactions" },
+    { "name": "Apache Airflow", "icon": "apacheairflow" },
+    { "name": "Sentry", "icon": "sentry" },
+    { "name": "NewRelic", "icon": "newrelic" }
   ],
   "experience": [
     {
@@ -63,21 +51,21 @@
       "end": null,
       "location": "Lahore, Pakistan",
       "highlights": [
-        "Lead architecture on client products including Toastmasters International's data migration platform and Supercal's AI scheduling service.",
-        "Design and ship complex backend features end-to-end — schema, APIs, task queues, and deployment.",
-        "Mentor junior engineers through their first production-scale Python and Django codebases.",
-        "Run technical planning and cross-team coordination through requirements, delivery, and release."
+        "Lead architecture on 4 client products, including Toastmasters International's data migration platform (6–7M member, club, and program records) and Supercal's AI-driven email scheduling service.",
+        "Design and ship backend features end-to-end — schema, APIs, task queues, and deployment — including a rule-based validation engine that gates data quality across millions of records before migration cutover.",
+        "Mentor a rotating group of ~10 engineers; several have moved from first production-scale codebase to independent feature ownership.",
+        "Coordinate technical planning and release delivery across 10–15 engineers per cycle; led the 4-month Toastmasters migration program from design through cutover."
       ]
     },
     {
       "company": "The Entertainer",
-      "role": "Principal Software Engineer",
+      "role": "Lead Software Engineer",
       "start": "2020-03",
       "end": "2021-03",
       "location": "",
       "highlights": [
         "Designed and shipped APIs powering the Entertainer and Munch consumer apps.",
-        "Built Scrapy-based scrapers that pulled merchant and outlet data from multiple vendors.",
+        "Built Selenium-based scrapers that pulled merchant and outlet data from multiple vendors.",
         "Wrote scheduled jobs keeping merchant and outlet catalogs in sync with upstream sources.",
         "Designed and implemented a loyalty system shared across multiple consumer products."
       ]
@@ -157,12 +145,13 @@
     },
     {
       "name": "Supercal",
-      "description": "Email-based meeting scheduler that uses AI to coordinate group availability and eliminate the back-and-forth. Built with Django on AWS.",
-      "tech": ["Python", "Django", "AWS"],
+      "description": "Email-based meeting scheduler (beta) that uses GPT-4 to read participant replies and converge a group on a meeting time without manual back-and-forth. Built on Django + AWS, integrating Google Calendar and Outlook Calendar APIs.",
+      "tech": ["Python", "Django", "OpenAI GPT-4", "Google Calendar API", "Outlook Calendar API", "AWS"],
       "contributions": [
-        "Designed and built the backend for the conversational AI module that parses email replies and drives scheduling decisions.",
-        "Built the conversational service that coordinates group availability over email threads.",
-        "Built the backend APIs supporting the rest of the product surface."
+        "Designed and built the conversational AI backend on top of OpenAI GPT-4 — parsing inbound replies for scheduling intent (accept, decline, propose-new-time, ambiguous) and producing structured next-step decisions for the scheduler.",
+        "Built the email-thread orchestration layer that maintains state across multi-party threads, dispatches the next message, and drives the scheduling loop until a slot is locked in.",
+        "Integrated Google Calendar and Outlook Calendar APIs for live availability lookup, conflict checks, and final event creation across all participants.",
+        "Built the backend APIs and data model for the rest of the product surface — accounts, meeting drafts, and per-participant scheduling state."
       ],
       "links": { "live": null, "repo": null }
     },
@@ -175,6 +164,28 @@
         "Built a form-management system that lets admins compose a different ad form per category.",
         "Built the matching filter engine so each category's ads could be searched by its own fields.",
         "Built the customer-facing frontend in ReactJS and NextJS."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "The Entertainer",
+      "description": "Consumer lifestyle and rewards app offering 'Buy 1 Get 1 Free' dining, entertainment, and hospitality benefits across multiple international markets.",
+      "tech": ["Python", "Flask", "Selenium", "MySQL"],
+      "contributions": [
+        "Built and maintained the backend APIs powering the consumer apps — accounts, offer catalogs, redemptions, and merchant data.",
+        "Developed Selenium-based scrapers and scheduled jobs that pulled merchant and outlet data from upstream vendor sites and kept the catalog in sync.",
+        "Designed and implemented a loyalty points engine shared across multiple consumer products in the Entertainer family.",
+        "Owned data-modelling and migration work in MySQL as the catalog grew across new markets and offer types."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "WorkSTEPS",
+      "description": "B2B occupational health platform giving clinicians and employers digital tools to schedule, conduct, and analyze functional capacity evaluations (FCEs) and pre-employment testing.",
+      "tech": ["Python", "Django", "MySQL", "JavaScript", "Bootstrap"],
+      "contributions": [
+        "Architected core data handling and access controls with HIPAA compliance as a first-class constraint across the platform.",
+        "Migrated the product from a legacy PHP application to a Django-based rewrite, moving data and business logic onto the new stack."
       ],
       "links": { "live": null, "repo": null }
     }
