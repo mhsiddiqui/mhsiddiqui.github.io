@@ -13,7 +13,7 @@ export default function About({ aboutMe }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.6 }}
-        className="max-w-4xl text-xl leading-relaxed text-neutral-700 md:text-2xl"
+        className="text-xl leading-relaxed text-neutral-700 md:text-2xl"
       >
         {text}
       </motion.p>

@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react'
 import { motion } from 'framer-motion'
 import DownloadResumeButton from './DownloadResumeButton'
+import ToptalBadge from './ToptalBadge'
 
 export default function Hero({ cv, personalInfo, contact }) {
   const socials = [
@@ -28,72 +29,84 @@ export default function Hero({ cv, personalInfo, contact }) {
       />
 
       <div className="mx-auto max-w-7xl px-6 py-24 md:py-36 lg:py-44">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex-1"
+          >
+            <motion.span
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/70 px-4 py-1.5 text-sm font-medium text-emerald-700 backdrop-blur"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              {personalInfo.title}
+            </motion.span>
+
+            <h1 className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
+              <span className="text-gradient">{personalInfo.name}</span>
+            </h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mb-8 max-w-2xl text-lg text-neutral-600 md:text-xl"
+            >
+              {personalInfo.tagline}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-2 text-sm text-neutral-500"
+            >
+              <Icon icon="mdi:map-marker-outline" className="h-4 w-4" />
+              <span>{personalInfo.location}</span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-10 flex flex-wrap items-center gap-4"
+            >
+              <DownloadResumeButton cv={cv} />
+              <div className="flex flex-wrap gap-3">
+                {socials.map((s) => (
+                  <motion.a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={s.label}
+                    whileHover={{ y: -3, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white/80 text-neutral-700 shadow-sm backdrop-blur transition-colors hover:border-emerald-400 hover:text-emerald-600"
+                  >
+                    <Icon icon={s.icon} className="h-5 w-5" />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/70 px-4 py-1.5 text-sm font-medium text-emerald-700 backdrop-blur"
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex justify-start lg:justify-end"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
-            {personalInfo.title}
-          </motion.span>
-
-          <h1 className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
-            <span className="text-gradient">{personalInfo.name}</span>
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8 max-w-2xl text-lg text-neutral-600 md:text-xl"
-          >
-            {personalInfo.tagline}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex items-center gap-2 text-sm text-neutral-500"
-          >
-            <Icon icon="mdi:map-marker-outline" className="h-4 w-4" />
-            <span>{personalInfo.location}</span>
+            <ToptalBadge />
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-10 flex flex-wrap items-center gap-4"
-          >
-            <DownloadResumeButton cv={cv} />
-            <div className="flex flex-wrap gap-3">
-              {socials.map((s) => (
-                <motion.a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white/80 text-neutral-700 shadow-sm backdrop-blur transition-colors hover:border-emerald-400 hover:text-emerald-600"
-                >
-                  <Icon icon={s.icon} className="h-5 w-5" />
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
