@@ -75,8 +75,47 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginBottom: 2,
   },
+  columns: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  leftCol: {
+    width: '33%',
+    paddingRight: 16,
+  },
+  rightCol: {
+    flex: 1,
+    paddingLeft: 16,
+    borderLeftWidth: 0.5,
+    borderLeftColor: COLORS.line,
+    borderLeftStyle: 'solid',
+  },
   section: {
     marginTop: 12,
+  },
+  leftItemTitle: {
+    fontFamily: 'Helvetica-Bold',
+    color: COLORS.heading,
+    fontSize: 9.5,
+  },
+  leftItemSub: {
+    color: COLORS.accent,
+    fontSize: 9,
+  },
+  osItem: {
+    marginBottom: 5,
+  },
+  osName: {
+    color: COLORS.accentDark,
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 9,
+    textDecoration: 'none',
+  },
+  osDesc: {
+    color: COLORS.muted,
+    fontSize: 8.5,
+    lineHeight: 1.35,
+    marginTop: 1,
   },
   sectionTitle: {
     fontSize: 10,
@@ -235,106 +274,126 @@ export function ResumeDocument({ cv }) {
           <Text>{summary}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Experience</Text>
-          {cv.experience.map((exp) => (
-            <View
-              key={`${exp.company}-${exp.start}`}
-              style={styles.item}
-              wrap={false}
-            >
-              <View style={styles.itemHeader}>
-                <Text>
-                  <Text style={styles.role}>{exp.role}</Text>
-                  <Text style={{ color: COLORS.subtle }}> · </Text>
-                  <Text style={styles.org}>{exp.company}</Text>
-                </Text>
-                <Text style={styles.meta}>
-                  {formatDuration(exp.start, exp.end)}
-                </Text>
+        <View style={styles.columns}>
+          <View style={styles.leftCol}>
+            {cv.skills?.length > 0 && (
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.sectionTitle}>Skills</Text>
+                <View style={styles.skillsWrap}>
+                  {cv.skills.map((skill) => (
+                    <SkillPill key={skill.name} skill={skill} />
+                  ))}
+                </View>
               </View>
-              {exp.location && <Text style={styles.meta}>{exp.location}</Text>}
-              {exp.highlights.map((h, i) => (
-                <Bullet key={i}>{h}</Bullet>
-              ))}
-            </View>
-          ))}
-        </View>
+            )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Selected Projects</Text>
-          {cv.projects.map((p) => (
-            <View key={p.name} style={styles.item} wrap={false}>
-              <Text style={styles.projectName}>{p.name}</Text>
-              {p.tech?.length > 0 && (
-                <Text style={styles.projectTech}>{p.tech.join(' · ')}</Text>
-              )}
-              <Text style={styles.projectDesc}>{p.description}</Text>
-              {p.contributions.map((c, i) => (
-                <Bullet key={i}>{c}</Bullet>
-              ))}
-            </View>
-          ))}
-        </View>
+            {cv.education?.length > 0 && (
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.sectionTitle}>Education</Text>
+                {cv.education.map((e) => (
+                  <View
+                    key={`${e.institution}-${e.start}`}
+                    style={{ marginBottom: 6 }}
+                  >
+                    <Text style={styles.leftItemTitle}>{e.degree}</Text>
+                    <Text style={styles.leftItemSub}>{e.institution}</Text>
+                    <Text style={styles.meta}>
+                      {formatDuration(e.start, e.end)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
 
-        <View style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>Skills</Text>
-          <View style={styles.skillsWrap}>
-            {cv.skills.map((skill) => (
-              <SkillPill key={skill.name} skill={skill} />
-            ))}
+            {cv.publications?.length > 0 && (
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.sectionTitle}>Publications</Text>
+                {cv.publications.map((p, i) => (
+                  <View key={i} style={styles.publication}>
+                    <Text>
+                      <Text style={{ fontFamily: 'Helvetica-Bold' }}>
+                        {p.title}
+                      </Text>
+                      {'. '}
+                      {p.authors}. {p.venue}
+                      {p.volume && ` ${p.volume}`}
+                      {p.year && ` (${p.year})`}
+                      {p.page && `, p. ${p.page}`}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {cv.open_source_contributions?.length > 0 && (
+              <View style={styles.section} wrap={false}>
+                <Text style={styles.sectionTitle}>Open Source</Text>
+                {cv.open_source_contributions.map((repo) => (
+                  <View key={repo.name} style={styles.osItem}>
+                    <Link src={repo.url} style={styles.osName}>
+                      {repo.name}
+                    </Link>
+                    {repo.description && (
+                      <Text style={styles.osDesc}>{repo.description}</Text>
+                    )}
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+
+          <View style={styles.rightCol}>
+            {cv.experience?.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Experience</Text>
+                {cv.experience.map((exp) => (
+                  <View
+                    key={`${exp.company}-${exp.start}`}
+                    style={styles.item}
+                    wrap={false}
+                  >
+                    <View style={styles.itemHeader}>
+                      <Text>
+                        <Text style={styles.role}>{exp.role}</Text>
+                        <Text style={{ color: COLORS.subtle }}> · </Text>
+                        <Text style={styles.org}>{exp.company}</Text>
+                      </Text>
+                      <Text style={styles.meta}>
+                        {formatDuration(exp.start, exp.end)}
+                      </Text>
+                    </View>
+                    {exp.location && (
+                      <Text style={styles.meta}>{exp.location}</Text>
+                    )}
+                    {exp.highlights.map((h, i) => (
+                      <Bullet key={i}>{h}</Bullet>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {cv.projects?.length > 0 && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Selected Projects</Text>
+                {cv.projects.map((p) => (
+                  <View key={p.name} style={styles.item} wrap={false}>
+                    <Text style={styles.projectName}>{p.name}</Text>
+                    {p.tech?.length > 0 && (
+                      <Text style={styles.projectTech}>
+                        {p.tech.join(' · ')}
+                      </Text>
+                    )}
+                    <Text style={styles.projectDesc}>{p.description}</Text>
+                    {p.contributions.map((c, i) => (
+                      <Bullet key={i}>{c}</Bullet>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         </View>
-
-        <View style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>Education</Text>
-          {cv.education.map((e) => (
-            <View
-              key={`${e.institution}-${e.start}`}
-              style={{ marginBottom: 4 }}
-            >
-              <View style={styles.itemHeader}>
-                <Text>
-                  <Text style={styles.role}>{e.degree}</Text>
-                  <Text style={{ color: COLORS.subtle }}> · </Text>
-                  <Text style={styles.org}>{e.institution}</Text>
-                </Text>
-                <Text style={styles.meta}>
-                  {formatDuration(e.start, e.end)}
-                </Text>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {cv.publications?.length > 0 && (
-          <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>Publications</Text>
-            {cv.publications.map((p, i) => (
-              <View key={i} style={styles.publication}>
-                <Text>
-                  <Text style={{ fontFamily: 'Helvetica-Bold' }}>
-                    {p.title}
-                  </Text>
-                  {'. '}
-                  {p.authors}. {p.venue}
-                  {p.volume && ` ${p.volume}`}
-                  {p.year && ` (${p.year})`}
-                  {p.page && `, p. ${p.page}`}
-                </Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {cv.open_source_contributions?.length > 0 && (
-          <View style={styles.section} wrap={false}>
-            <Text style={styles.sectionTitle}>Open Source</Text>
-            <Text style={styles.inlineList}>
-              {cv.open_source_contributions.join(' · ')}
-            </Text>
-          </View>
-        )}
       </Page>
     </Document>
   )

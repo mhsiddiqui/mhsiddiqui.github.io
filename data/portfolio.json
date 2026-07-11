@@ -3,12 +3,12 @@
     "name": "Muhammad Hassan Siddiqui",
     "short_name": "M. Hassan",
     "title": "Principal Software Engineer",
-    "tagline": "Backend engineer specializing in Python, Django, and scalable web systems",
+    "tagline": "I make backends fast, reliable, and ready for the next 10× of growth.",
     "location": "Lahore, Pakistan"
   },
   "about_me": {
     "from_date": "2014-02",
-    "text": "{years}+ years of building backend systems that hold up in production — APIs, data pipelines, scrapers, and conversational AI services. Python and Django are home ground; I've shipped across ed-tech, sports analytics, and loyalty platforms. These days I lead teams, own architecture decisions, and mentor engineers through the same rabbit holes I came up through."
+    "text": "{years}+ years building backend systems that hold up in production. My specialty is high-stakes data work — migrating millions of records with zero data loss, and scaling products from alpha to 100k+ users on Python, Django, and AWS. I've shipped across ed-tech, sports analytics, and loyalty platforms; these days I lead teams, own architecture decisions, and build LLM-powered features. Mostly I sweat the unglamorous things that keep systems alive: clean data models, fast pipelines, and deploys that don't wake you at 2am."
   },
   "skills": [
     { "name": "Python", "icon": "python" },
@@ -49,23 +49,23 @@
       "end": null,
       "location": "Lahore, Pakistan",
       "highlights": [
-        "Lead architecture on 4 client products, including Toastmasters International's data migration platform (6–7M member, club, and program records) and Supercal's AI-driven email scheduling service.",
+        "Lead architecture across client products including Toastmasters International's data-migration platform (6–7M member, club, and program records), Supercal's AI email scheduling, and Search Atlas's SEO Report Builder.",
         "Design and ship backend features end-to-end — schema, APIs, task queues, and deployment — including a rule-based validation engine that gates data quality across millions of records before migration cutover.",
         "Mentor a rotating group of ~10 engineers; several have moved from first production-scale codebase to independent feature ownership.",
-        "Coordinate technical planning and release delivery across 10–15 engineers per cycle; led the 4-month Toastmasters migration program from design through cutover."
+        "Coordinate technical planning and release delivery across 10–15 engineers per cycle; led the 4-month Toastmasters migration program from design through cutover, cutting full-migration runtime from 30+ hours to 4–5 hours."
       ]
     },
     {
       "company": "The Entertainer",
-      "role": "Lead Software Engineer",
+      "role": "Principal Software Engineer",
       "start": "2020-03",
       "end": "2021-03",
       "location": "",
       "highlights": [
-        "Designed and shipped APIs powering the Entertainer and Munch consumer apps.",
-        "Built Selenium-based scrapers that pulled merchant and outlet data from multiple vendors.",
-        "Wrote scheduled jobs keeping merchant and outlet catalogs in sync with upstream sources.",
-        "Designed and implemented a loyalty system shared across multiple consumer products."
+        "Designed and shipped APIs powering the Entertainer and Munch consumer apps (6M+ users at the time).",
+        "Built Selenium scrapers that pulled 45k+ outlet records across ~22 countries.",
+        "Cut the initial catalog sync from over a month to ~1 week via multi-threading, with on-demand updates thereafter.",
+        "Built a gamification game where users earn and redeem coins."
       ]
     },
     {
@@ -94,22 +94,47 @@
     },
     {
       "company": "KICS, UET Lahore",
-      "role": "Research Officer Grade III",
+      "role": "Research Officer Grade II",
       "start": "2014-02",
       "end": "2014-08",
       "location": "Lahore, Pakistan",
       "highlights": [
-        "Contributed to NLP research projects at the Al-Khawarizmi Institute of Computer Science — work that led to a published paper on Punjabi Shahmukhi stemming."
+        "Contributed to early-career research spanning QEMU hardware emulation, network-security tooling, and software-defined networking (SDN)."
       ]
     }
   ],
   "projects": [
+    {
+      "name": "Search Atlas — Report Builder",
+      "description": "SEO platform offering a suite of tools. I own the Report Builder module, which composes reports from integrated data modules (Google Search Console, Business Profile, Ads, Analytics, Meta Ads, LLM Performance, Keyword Report, AI SEO) with AI-generated summaries, flexible layouts, email scheduling, and report/presentation export.",
+      "tech": ["Python", "Django", "Django REST Framework", "FastAPI", "Celery", "Redis", "PostgreSQL"],
+      "contributions": [
+        "Redesigned the entire Report Builder module for flexibility and robustness, using caching to cut page-load time for larger reports from 10–15s to ~5s.",
+        "Optimized presentation generation from ~3 minutes to under 1 minute.",
+        "Built AI-generated summaries for individual data modules and for the full report and portfolio.",
+        "Lead a 2-person team on the module."
+      ],
+      "links": { "live": null, "repo": null }
+    },
+    {
+      "name": "Video Proctoring Tool",
+      "description": "Internal company service, integrated across multiple in-house products, that analyzes candidate posture during video interviews (looking straight, left/right, or out of frame) to flag potential cheating.",
+      "tech": ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redis", "Taskiq", "Docker"],
+      "contributions": [
+        "Led a complete architectural redesign of the service.",
+        "Replaced ad-hoc JSON-file/Redis storage with PostgreSQL + SQLAlchemy, and added a storage layer configurable between S3 and local filesystem for video frames.",
+        "Added a Client model with client-ID-based authentication to isolate per-client data on a previously unauthenticated API.",
+        "Replaced FastAPI BackgroundTasks with a Taskiq queue, added API versioning, an admin panel, documentation, and CI pipelines, and raised test coverage from 0 to 90%+."
+      ],
+      "links": { "live": null, "repo": null }
+    },
     {
       "name": "Toastmasters International — Data Migration",
       "description": "Data migration platform for Toastmasters International — moving member, club, and program data from a legacy system to a new platform across a global network of clubs.",
       "tech": ["Python", "Django", "PostgreSQL"],
       "contributions": [
         "Built the migration pipelines that moved member, club, and program data off the legacy system.",
+        "Cut full-migration runtime from 30+ hours to 4–5 hours (~6–7× faster) through query optimization, factory-based foreign-key caching, chunk-size tuning, and parallel task execution.",
         "Designed a rule-based validation engine that flagged data-quality issues and produced reports across data points.",
         "Built a data-cleaning framework that enforced integrity before records reached the new platform.",
         "Architected the migration to run at scale — batched, resumable, and safe to re-run on failures."
@@ -122,6 +147,7 @@
       "tech": ["Python", "Django"],
       "contributions": [
         "Added multi-tenant support so schools could onboard as B2B clients alongside individual learners.",
+        "Architected and load-tested the platform for 100k+ concurrent users, optimizing across the stack to meet the target.",
         "Shipped weekly progress reports for students and a separate reporting view for B2B teachers.",
         "Built a recommendation engine that surfaced each student's weakest areas for focused practice.",
         "Built a shared question bank spanning teacher and student workflows.",
@@ -136,8 +162,8 @@
       "contributions": [
         "Built the shooting-test management system that captures and scores basketball drills.",
         "Built the coach panel that lets coaches track, compare, and evaluate athletes.",
-        "Drove architecture decisions as the product grew in scope and traffic.",
-        "Scaled the backend to handle thousands of concurrent users and spiky test-day traffic."
+        "Grew the product from alpha to 100k+ users, driving architecture decisions and re-architecting deployment to Docker + AWS (Elastic Beanstalk, ECS, S3, RDS) with Jenkins CI as traffic scaled.",
+        "Recovered a full database loss from backup with zero data lost and hardened the server against future breaches."
       ],
       "links": { "live": null, "repo": null }
     },
@@ -146,10 +172,8 @@
       "description": "Email-based meeting scheduler (beta) that uses GPT-4 to read participant replies and converge a group on a meeting time without manual back-and-forth. Built on Django + AWS, integrating Google Calendar and Outlook Calendar APIs.",
       "tech": ["Python", "Django", "OpenAI GPT-4", "Google Calendar API", "Outlook Calendar API", "AWS"],
       "contributions": [
-        "Designed and built the conversational AI backend on top of OpenAI GPT-4 — parsing inbound replies for scheduling intent (accept, decline, propose-new-time, ambiguous) and producing structured next-step decisions for the scheduler.",
-        "Built the email-thread orchestration layer that maintains state across multi-party threads, dispatches the next message, and drives the scheduling loop until a slot is locked in.",
-        "Integrated Google Calendar and Outlook Calendar APIs for live availability lookup, conflict checks, and final event creation across all participants.",
-        "Built the backend APIs and data model for the rest of the product surface — accounts, meeting drafts, and per-participant scheduling state."
+        "Improved the GPT-4 email-parsing layer on a pre-existing codebase, cutting its error rate from ~30% to ~10%.",
+        "Redesigned prompt management from raw Python strings to Jinja2 templates, making prompts far easier to design, maintain, and iterate on."
       ],
       "links": { "live": null, "repo": null }
     },
@@ -170,9 +194,9 @@
       "description": "Consumer lifestyle and rewards app offering 'Buy 1 Get 1 Free' dining, entertainment, and hospitality benefits across multiple international markets.",
       "tech": ["Python", "Flask", "Selenium", "MySQL"],
       "contributions": [
-        "Built and maintained the backend APIs powering the consumer apps — accounts, offer catalogs, redemptions, and merchant data.",
-        "Developed Selenium-based scrapers and scheduled jobs that pulled merchant and outlet data from upstream vendor sites and kept the catalog in sync.",
-        "Designed and implemented a loyalty points engine shared across multiple consumer products in the Entertainer family.",
+        "Built and maintained the backend APIs powering the consumer apps (6M+ users at the time) — accounts, offer catalogs, redemptions, and merchant data.",
+        "Built Selenium scrapers that pulled 45k+ outlet records across ~22 countries; cut the initial full sync from over a month to ~1 week via multi-threading, with on-demand updates thereafter.",
+        "Built a gamification game where users earn and redeem coins.",
         "Owned data-modelling and migration work in MySQL as the catalog grew across new markets and offer types."
       ],
       "links": { "live": null, "repo": null }
@@ -182,8 +206,8 @@
       "description": "B2B occupational health platform giving clinicians and employers digital tools to schedule, conduct, and analyze functional capacity evaluations (FCEs) and pre-employment testing.",
       "tech": ["Python", "Django", "MySQL", "JavaScript", "Bootstrap"],
       "contributions": [
-        "Architected core data handling and access controls with HIPAA compliance as a first-class constraint across the platform.",
-        "Migrated the product from a legacy PHP application to a Django-based rewrite, moving data and business logic onto the new stack."
+        "Implemented a strict password and authentication policy — complexity rules, blocking reuse of the last 5 passwords, blocking personal-info and dictionary words, and security-question-based reset — to support the platform's compliance requirements.",
+        "Migrated 100k+ records from a legacy WordPress-based system into the Django rewrite via custom ETL pipelines."
       ],
       "links": { "live": null, "repo": null }
     }
