@@ -7,6 +7,3 @@ dist-ssr
 .env.local
 .env.*.local
 .vite
-
-# Private career master notes — source for the resume, not for the public repo
-data/details/
