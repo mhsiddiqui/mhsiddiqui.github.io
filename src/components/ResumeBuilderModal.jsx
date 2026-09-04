@@ -55,6 +55,7 @@ export default function ResumeBuilderModal({
   const [incEducation, setIncEducation] = useState(true)
   const [incPublications, setIncPublications] = useState(true)
   const [incOpenSource, setIncOpenSource] = useState(true)
+  const [title, setTitle] = useState('')
 
   // (Re)initialise every time the modal opens — default: everything selected.
   useEffect(() => {
@@ -65,6 +66,7 @@ export default function ResumeBuilderModal({
     setIncEducation(true)
     setIncPublications(true)
     setIncOpenSource(true)
+    setTitle(cv.personal_info.title)
   }, [open, cv])
 
   // Escape to close (unless mid-generation).
@@ -88,6 +90,10 @@ export default function ResumeBuilderModal({
   const filteredCv = useMemo(
     () => ({
       ...cv,
+      personal_info: {
+        ...cv.personal_info,
+        title: title.trim() || cv.personal_info.title,
+      },
       experience: cv.experience.filter((e) => selExp.has(expKey(e))),
       projects: cv.projects.filter((p) => selProj.has(p.name)),
       skills: cv.skills.filter((s) => selSkill.has(s.name)),
@@ -97,7 +103,16 @@ export default function ResumeBuilderModal({
         ? cv.open_source_contributions || []
         : [],
     }),
-    [cv, selExp, selProj, selSkill, incEducation, incPublications, incOpenSource]
+    [
+      cv,
+      title,
+      selExp,
+      selProj,
+      selSkill,
+      incEducation,
+      incPublications,
+      incOpenSource,
+    ]
   )
 
   if (!open) return null
@@ -136,6 +151,20 @@ export default function ResumeBuilderModal({
 
         {/* Body */}
         <div className="flex-1 space-y-6 overflow-y-auto px-6 py-4">
+          {/* Title */}
+          <div>
+            <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
+              Title
+            </h4>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder={cv.personal_info.title}
+              className="w-full rounded-md border border-gray-200 px-3 py-1.5 text-sm text-gray-700 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+            />
+          </div>
+
           {/* Experience */}
           <div>
             <div className="mb-1 flex items-center justify-between">

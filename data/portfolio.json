@@ -2,13 +2,13 @@
   "personal_info": {
     "name": "Muhammad Hassan Siddiqui",
     "short_name": "M. Hassan",
-    "title": "Principal Software Engineer",
-    "tagline": "I make backends fast, reliable, and ready for the next 10× of growth.",
+    "title": "Full-Stack Developer",
+    "tagline": "I build fast, reliable products end-to-end — from database to UI.",
     "location": "Lahore, Pakistan"
   },
   "about_me": {
     "from_date": "2014-02",
-    "text": "{years}+ years building backend systems that hold up in production. My specialty is high-stakes data work — migrating millions of records with zero data loss, and scaling products from alpha to 100k+ users on Python, Django, and AWS. I've shipped across ed-tech, sports analytics, and loyalty platforms; these days I lead teams, own architecture decisions, and build LLM-powered features. Mostly I sweat the unglamorous things that keep systems alive: clean data models, fast pipelines, and deploys that don't wake you at 2am."
+    "text": "{years}+ years building products end-to-end — backend systems that hold up in production, and the frontends on top of them. My core strength is high-stakes data work — migrating millions of records with zero data loss, and scaling products from alpha to 100k+ users on Python, Django, and AWS — but I'm just as comfortable picking up React and Next.js to ship a feature's UI when that's what the work needs. I've shipped across ed-tech, sports analytics, and loyalty platforms; these days I lead teams, own architecture decisions, and build LLM-powered features. Mostly I sweat the unglamorous things that keep systems alive: clean data models, fast pipelines, and deploys that don't wake you at 2am."
   },
   "skills": [
     { "name": "Python", "icon": "python" },
@@ -43,13 +43,28 @@
   ],
   "experience": [
     {
+      "company": "Search Atlas",
+      "role": "Principal Software Engineer",
+      "start": "2025-09",
+      "end": null,
+      "location": "Lahore, Pakistan (Remote)",
+      "highlights": [
+        "Own the SEO Report Builder module, composing reports from integrated data modules (Google Search Console, Business Profile, Ads, Analytics, Meta Ads, LLM Performance, Keyword Report, AI SEO) with AI-generated summaries, flexible layouts, email scheduling, and report/presentation export.",
+        "Redesigned the Report Builder module for flexibility and robustness, using caching to cut page-load time for larger reports from 10–15s to ~5s.",
+        "Optimized presentation generation from ~3 minutes to under 1 minute.",
+        "Built AI-generated summaries for individual data modules and for the full report and portfolio.",
+        "Built several ReactJS components powering the Report Builder module's frontend.",
+        "Lead a 2-person team on the module."
+      ]
+    },
+    {
       "company": "Arbisoft",
       "role": "Principal Software Engineer",
       "start": "2021-03",
-      "end": null,
+      "end": "2025-10",
       "location": "Lahore, Pakistan",
       "highlights": [
-        "Lead architecture across client products including Toastmasters International's data-migration platform (6–7M member, club, and program records), Supercal's AI email scheduling, and Search Atlas's SEO Report Builder.",
+        "Lead architecture across client products including Toastmasters International's data-migration platform (6–7M member, club, and program records) and Supercal's AI email scheduling.",
         "Design and ship backend features end-to-end — schema, APIs, task queues, and deployment — including a rule-based validation engine that gates data quality across millions of records before migration cutover.",
         "Mentor a rotating group of ~10 engineers; several have moved from first production-scale codebase to independent feature ownership.",
         "Coordinate technical planning and release delivery across 10–15 engineers per cycle; led the 4-month Toastmasters migration program from design through cutover, cutting full-migration runtime from 30+ hours to 4–5 hours."
@@ -107,11 +122,12 @@
     {
       "name": "Search Atlas — Report Builder",
       "description": "SEO platform offering a suite of tools. I own the Report Builder module, which composes reports from integrated data modules (Google Search Console, Business Profile, Ads, Analytics, Meta Ads, LLM Performance, Keyword Report, AI SEO) with AI-generated summaries, flexible layouts, email scheduling, and report/presentation export.",
-      "tech": ["Python", "Django", "Django REST Framework", "FastAPI", "Celery", "Redis", "PostgreSQL"],
+      "tech": ["Python", "Django", "Django REST Framework", "FastAPI", "Celery", "Redis", "PostgreSQL", "ReactJS"],
       "contributions": [
         "Redesigned the entire Report Builder module for flexibility and robustness, using caching to cut page-load time for larger reports from 10–15s to ~5s.",
         "Optimized presentation generation from ~3 minutes to under 1 minute.",
         "Built AI-generated summaries for individual data modules and for the full report and portfolio.",
+        "Built several ReactJS components powering the module's frontend.",
         "Lead a 2-person team on the module."
       ],
       "links": { "live": null, "repo": null }
@@ -185,7 +201,7 @@
         "Designed the full backend architecture from scratch.",
         "Built a form-management system that lets admins compose a different ad form per category.",
         "Built the matching filter engine so each category's ads could be searched by its own fields.",
-        "Built the customer-facing frontend in ReactJS and NextJS."
+        "Built the entire customer-facing frontend end-to-end in ReactJS and NextJS."
       ],
       "links": { "live": null, "repo": null }
     },

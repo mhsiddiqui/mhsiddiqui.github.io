@@ -54,11 +54,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontFamily: 'Helvetica-Bold',
   },
-  tagline: {
-    fontSize: 10,
-    color: COLORS.muted,
-    marginBottom: 8,
-  },
   contactRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -236,9 +231,6 @@ export function ResumeDocument({ cv }) {
         <View style={styles.header}>
           <Text style={styles.name}>{cv.personal_info.name}</Text>
           <Text style={styles.title}>{cv.personal_info.title}</Text>
-          {cv.personal_info.tagline && (
-            <Text style={styles.tagline}>{cv.personal_info.tagline}</Text>
-          )}
           <View style={styles.contactRow}>
             {cv.contact.email && (
               <Text style={styles.contactItem}>{cv.contact.email}</Text>
